@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>frgmt — 404</title>
+    <meta name="description" content="fragment not found." />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f4f1e9" />
+    <link rel="icon" href="./src/mark.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles.css" />
+    <style>
+      .nf {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: clamp(3rem, 2rem + 5vw, 7rem) var(--gutter);
+        display: grid;
+        gap: 1.2rem;
+        text-align: left;
+      }
+      .nf__idx {
+        font-family: var(--f-mono);
+        font-size: var(--t-xs);
+        color: var(--muted);
+        letter-spacing: 0.02em;
+      }
+      .nf__code {
+        font-family: var(--f-sans);
+        font-weight: 800;
+        font-size: clamp(4rem, 3rem + 6vw, 8rem);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+        color: var(--ink);
+      }
+      .nf__title {
+        font-family: var(--f-sans);
+        font-weight: 700;
+        font-size: var(--t-2xl);
+        letter-spacing: -0.03em;
+        color: var(--ink);
+      }
+      .nf__desc {
+        color: var(--ink-2);
+        font-size: var(--t-lg);
+        line-height: 1.55;
+        max-width: 52ch;
+      }
+      .nf__cta {
+        display: flex;
+        gap: clamp(1rem, .5rem + 1.5vw, 2rem);
+        margin-top: .6rem;
+        font-family: var(--f-mono);
+        font-size: var(--t-sm);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav" aria-label="primary">
+      <a class="nav__brand" href="/" aria-label="frgmt — home">
+        <svg class="nav__mark" viewBox="25 0 110 90" fill="currentColor" aria-hidden="true">
+          <path d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
+          <path d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
+        </svg>
+        <span class="nav__wordmark">frgmt</span>
+      </a>
+      <nav class="nav__links" aria-label="sections">
+        <a href="/#thesis">thesis</a>
+        <a href="/work">work</a>
+        <a href="/#principles">principles</a>
+        <a href="/#team">team</a>
+      </nav>
+      <a class="nav__cta" href="mailto:hello@frgmt.xyz">
+        <span>hello@frgmt.xyz</span>
+        <span class="nav__cta-arrow" aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main class="nf">
+      <span class="nf__idx">00 / strayed</span>
+      <div class="nf__code">404</div>
+      <h1 class="nf__title">fragment not found.</h1>
+      <p class="nf__desc">
+        this path doesn't point to anything — broken link, renamed page, or a fragment that
+        never shipped. either way, it's not here.
+      </p>
+      <div class="nf__cta">
+        <a class="link link--primary" href="/">
+          <span>back to the studio</span>
+          <span class="link__arrow" aria-hidden="true">←</span>
+        </a>
+        <a class="link link--ghost" href="/work">
+          <span>see the fragments</span>
+          <span class="link__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>
