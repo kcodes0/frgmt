@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>frgmt — work</title>
-    <meta name="description" content="the full catalog. every fragment that frgmt has shipped, in progress, or left in the open." />
+    <title>frgmt — fragments</title>
+    <meta name="description" content="every fragment, latest first. what frgmt is working on right now, and everything behind it." />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#f4f1e9" />
     <link rel="icon" href="./src/mark.svg" type="image/svg+xml" />
@@ -44,24 +44,23 @@
         <div class="work-hero__crumb">
           <a href="./index.html">frgmt</a>
           <span aria-hidden="true">/</span>
-          <span>work</span>
+          <span>fragments</span>
         </div>
-        <h1 class="work-hero__title" id="work-heading" data-frag="th · ctlg">
-          <span data-scramble="instant">the catalog.</span>
+        <h1 class="work-hero__title" id="work-heading" data-frag="frgmnts · ltst · frst">
+          <span data-scramble="instant">fragments.</span>
         </h1>
         <p class="work-hero__lede">
-          every fragment. shipped, in progress, or left in the open.
-          <span class="work-hero__meta" data-role="counts">loading…</span>
+          latest first. whatever's at the top is what we're working on right now.
         </p>
-
-        <nav class="work-toc" aria-label="categories" data-role="toc">
-          <!-- filled by JS -->
-        </nav>
+        <div class="work-hero__status" data-role="status" aria-live="polite">
+          <span class="work-hero__pulse" aria-hidden="true"></span>
+          <span class="work-hero__status-text" data-role="status-text">loading fragments…</span>
+        </div>
       </section>
 
-      <div id="work-list" class="work-list" data-role="list">
+      <ol id="work-list" class="repo-grid repo-grid--flat" role="list" data-role="list">
         <!-- filled by JS -->
-      </div>
+      </ol>
 
       <section class="work-empty" data-role="empty" hidden>
         <p>no fragments imported yet. run <code>bun run fetch</code>.</p>
@@ -87,13 +86,11 @@
             </ul>
           </div>
           <div>
-            <h4>work</h4>
+            <h4>studio</h4>
             <ul>
-              <li><a href="./work.html#games">games</a></li>
-              <li><a href="./work.html#tools">developer tools</a></li>
-              <li><a href="./work.html#software">software</a></li>
-              <li><a href="./work.html#education">education</a></li>
-              <li><a href="./work.html#standards">standards</a></li>
+              <li><a href="./index.html#makes">fragments</a></li>
+              <li><a href="./index.html#team">team</a></li>
+              <li><a href="./index.html#isnt">what we aren't</a></li>
             </ul>
           </div>
           <div>
