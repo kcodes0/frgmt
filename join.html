@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>frgmt — join</title>
+    <meta name="description" content="bring a fragment. apply to build with frgmt." />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f4f1e9" />
+    <link rel="icon" href="./src/mark.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#form">skip to form</a>
+
+    <header class="nav" aria-label="primary">
+      <a class="nav__brand" href="./index.html" aria-label="frgmt — home">
+        <svg class="nav__mark" viewBox="25 0 110 90" fill="currentColor" aria-hidden="true">
+          <path d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
+          <path d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
+        </svg>
+        <span class="nav__wordmark">frgmt</span>
+      </a>
+      <nav class="nav__links" aria-label="sections">
+        <a href="./index.html#thesis">thesis</a>
+        <a href="./index.html#passport">capstone</a>
+        <a href="./work.html">work</a>
+        <a href="./join.html" aria-current="page">join</a>
+      </nav>
+      <a class="nav__cta" href="mailto:hello@frgmt.xyz">
+        <span>hello@frgmt.xyz</span>
+        <span class="nav__cta-arrow" aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main id="top">
+      <section class="join-hero" aria-labelledby="join-heading">
+        <div class="join-hero__crumb">
+          <a href="./index.html">frgmt</a>
+          <span aria-hidden="true">/</span>
+          <span>join</span>
+        </div>
+        <h1 class="join-hero__title" id="join-heading" data-frag="jn · brng · frgmnt">
+          <span data-scramble="instant">bring a fragment.</span>
+        </h1>
+        <p class="join-hero__lede">
+          frgmt isn't hiring in the traditional sense. we're accepting fragments. if you've got something small and good you want to ship under frgmt — or help ship passport — send us a note.
+        </p>
+        <ul class="join-hero__tags" role="list">
+          <li>engineers</li>
+          <li>designers</li>
+          <li>writers</li>
+          <li>teachers</li>
+          <li>curious humans</li>
+        </ul>
+      </section>
+
+      <section class="join-sent" data-role="sent" hidden aria-live="polite">
+        <div class="join-sent__badge">
+          <span class="join-sent__check" aria-hidden="true">✓</span>
+          <span>received</span>
+        </div>
+        <h2 class="join-sent__title">we'll read it.</h2>
+        <p class="join-sent__body">
+          application landed in the inbox. expect a reply from <a href="mailto:hello@frgmt.xyz">hello@frgmt.xyz</a> once we get to it. in the meantime — keep shipping. that's the signal.
+        </p>
+        <div class="join-sent__cta">
+          <a class="link link--primary" href="./index.html">
+            <span>back to the studio</span>
+            <span class="link__arrow" aria-hidden="true">←</span>
+          </a>
+          <a class="link link--ghost" href="./work.html">
+            <span>see the fragments</span>
+            <span class="link__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="join" id="form" data-role="form" aria-labelledby="join-form-heading">
+        <header class="section-head">
+          <span class="section-head__idx">application</span>
+          <h2 class="section-head__title" id="join-form-heading" data-frag="pplctn">
+            <span data-scramble>tell us about your fragment.</span>
+          </h2>
+          <p class="section-head__sub">
+            we read everything. short is fine. pitch the one thing you'd ship first.
+          </p>
+        </header>
+
+        <form
+          class="join-form"
+          action="https://formsubmit.co/hello@frgmt.xyz"
+          method="POST"
+          novalidate
+        >
+          <!-- formsubmit.co config -->
+          <input type="hidden" name="_subject" value="frgmt — new application" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="true" />
+          <input type="hidden" name="_next" value="https://frgmt.xyz/join?sent=1" />
+          <!-- honeypot: bots fill this, humans leave it empty -->
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="join-form__hp" aria-hidden="true" />
+
+          <div class="join-form__grid">
+            <label class="field">
+              <span class="field__label">
+                <span class="field__num">01</span>
+                <span>your name</span>
+              </span>
+              <input type="text" name="name" autocomplete="name" required />
+              <span class="field__hint">what to call you.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">
+                <span class="field__num">02</span>
+                <span>email</span>
+              </span>
+              <input type="email" name="email" autocomplete="email" required />
+              <span class="field__hint">we'll reply here.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">
+                <span class="field__num">03</span>
+                <span>github <span class="field__opt">(or similar)</span></span>
+              </span>
+              <input type="url" name="github" autocomplete="url" placeholder="https://github.com/…" />
+              <span class="field__hint">code lives somewhere. link it.</span>
+            </label>
+
+            <div class="field">
+              <span class="field__label">
+                <span class="field__num">04</span>
+                <span>you are a…</span>
+              </span>
+              <div class="chips" role="radiogroup" aria-label="primary role">
+                <label class="chip">
+                  <input type="radio" name="role" value="engineer" required />
+                  <span>engineer</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="role" value="designer" />
+                  <span>designer</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="role" value="writer" />
+                  <span>writer</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="role" value="teacher" />
+                  <span>teacher</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="role" value="generalist" />
+                  <span>generalist</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="role" value="other" />
+                  <span>other</span>
+                </label>
+              </div>
+            </div>
+
+            <label class="field field--full">
+              <span class="field__label">
+                <span class="field__num">05</span>
+                <span>the fragment <span class="field__opt">(link — optional)</span></span>
+              </span>
+              <input type="url" name="fragment_url" autocomplete="url" placeholder="https://…" />
+              <span class="field__hint">one thing you shipped that you'd point to. repo, live url, write-up — anything.</span>
+            </label>
+
+            <label class="field field--full">
+              <span class="field__label">
+                <span class="field__num">06</span>
+                <span>why frgmt</span>
+              </span>
+              <textarea name="why" rows="5" maxlength="800" required placeholder="short is fine. what would you ship first under frgmt? why this and not somewhere else?"></textarea>
+              <span class="field__hint">800 chars max. no cover letter boilerplate. say a real thing.</span>
+            </label>
+
+            <label class="field field--full field--consent">
+              <input type="checkbox" name="ethics_ack" required />
+              <span>
+                i've read the <a href="./index.html#principles">principles</a>. ethics over profit, accessibility is a feature, small over scalable. i'm in.
+              </span>
+            </label>
+          </div>
+
+          <div class="join-form__foot">
+            <button type="submit" class="btn btn--primary">
+              <span>send application</span>
+              <span class="btn__arrow" aria-hidden="true">↗</span>
+            </button>
+            <p class="join-form__note">
+              goes straight to <a href="mailto:hello@frgmt.xyz">hello@frgmt.xyz</a>. no third-party tracking. no account required. replies come from a human.
+            </p>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="foot" aria-label="footer">
+      <div class="foot__top">
+        <a href="./index.html" class="foot__brand" aria-label="frgmt — home">
+          <svg class="foot__mark" viewBox="25 0 110 90" fill="currentColor" aria-hidden="true">
+            <path d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
+            <path d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
+          </svg>
+          <span>frgmt</span>
+        </a>
+        <div class="foot__cols">
+          <div>
+            <h4>studio</h4>
+            <ul>
+              <li><a href="./index.html#thesis">thesis</a></li>
+              <li><a href="./index.html#principles">principles</a></li>
+              <li><a href="./index.html#isnt">what we aren't</a></li>
+              <li><a href="./join.html">join us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>work</h4>
+            <ul>
+              <li><a href="./index.html#passport">passport (capstone)</a></li>
+              <li><a href="./work.html">full catalog</a></li>
+              <li><a href="https://passport.frgmt.xyz">passport.frgmt.xyz</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>elsewhere</h4>
+            <ul>
+              <li><a href="mailto:hello@frgmt.xyz">hello@frgmt.xyz</a></li>
+              <li><a href="https://github.com/kcodes0/frgmt" target="_blank" rel="noopener">github</a></li>
+              <li><a href="./join.html">apply</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="foot__meta">
+        <span>© mmxxvi frgmt.xyz</span>
+        <span>small things. that add up.</span>
+        <span class="foot__hint">press <kbd>v</kbd> for vowels</span>
+      </div>
+    </footer>
+
+    <script type="module" src="./src/join.js"></script>
+  </body>
+</html>

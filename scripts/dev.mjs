@@ -5,6 +5,8 @@
 
 import index from "../index.html";
 import work from "../work.html";
+import join from "../join.html";
+import notFound from "../404.html";
 
 const port = Number(process.env.PORT ?? 3000);
 
@@ -16,11 +18,15 @@ const server = Bun.serve({
     "/index.html": index,
     "/work": work,
     "/work.html": work,
+    "/join": join,
+    "/join.html": join,
+    "/404": notFound,
+    "/404.html": notFound,
   },
 });
 
 console.log(`frgmt dev → http://localhost:${server.port}`);
 console.log(`  /           → index.html`);
-console.log(`  /index.html → index.html`);
 console.log(`  /work       → work.html`);
-console.log(`  /work.html  → work.html`);
+console.log(`  /join       → join.html`);
+console.log(`  /404        → 404.html`);

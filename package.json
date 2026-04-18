@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run scripts/dev.mjs",
-    "build": "bun build ./index.html ./work.html ./404.html --outdir=./dist --minify --sourcemap=linked",
+    "build": "bun build ./index.html ./work.html ./join.html ./404.html --outdir=./dist --minify --sourcemap=linked",
     "fetch": "bun run scripts/fetch-repos.mjs",
     "start": "bun run dev"
   },
