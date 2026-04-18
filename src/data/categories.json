@@ -1,0 +1,35 @@
+{
+  "categories": [
+    {
+      "id": "games",
+      "name": "games",
+      "desc": "finishable. memorable. never 100 hours.",
+      "keywords": ["game", "games", "roguelike", "puzzle", "arcade", "gamedev", "unity", "godot", "bevy", "pygame", "lovr", "love2d", "phaser"]
+    },
+    {
+      "id": "tools",
+      "name": "developer tools",
+      "desc": "sharp, scoped, five minutes to useful.",
+      "keywords": ["cli", "tool", "tools", "utility", "devtool", "developer-tool", "dx", "lint", "linter", "formatter", "bundler", "compiler", "sdk", "library"]
+    },
+    {
+      "id": "software",
+      "name": "software for everyone",
+      "desc": "no terminal required. teaches as it works.",
+      "keywords": ["app", "desktop", "gui", "mobile", "web-app", "webapp", "pwa", "macos", "ios", "android", "electron"]
+    },
+    {
+      "id": "education",
+      "name": "education",
+      "desc": "one idea per fragment. honest about the rest.",
+      "keywords": ["tutorial", "course", "learning", "education", "guide", "book", "docs", "documentation", "explainer"]
+    },
+    {
+      "id": "standards",
+      "name": "standards & experiments",
+      "desc": "protocols, specs, odd ideas that deserve to exist.",
+      "keywords": ["spec", "protocol", "standard", "rfc", "schema", "research", "experiment", "experiments", "prototype"]
+    }
+  ],
+  "default": "standards"
+}

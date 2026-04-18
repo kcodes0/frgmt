@@ -1,9 +1,64 @@
 // frgmt — enhancement layer
 // scramble text on reveal, stroke-draw the hero mark, tilt the mark
-// with the cursor, and toggle vowels on "v"
+// with the cursor, render tile counts + team roster, toggle vowels on "v"
+
+import repoPayload from "./data/repos.json" with { type: "json" };
+import team from "./data/team.json" with { type: "json" };
 
 const supportsIO = "IntersectionObserver" in window;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ── per-dev fragment cards ────────────────────────────────────── */
+// each developer gets a "see <name>'s fragments" card on the home page,
+// tinted with their --frag-color (hex from team.json). the card summarizes
+// the dev's most-recent repo activity and a per-dev repo count.
+const repos = repoPayload.repos ?? [];
+const byDev = new Map();
+for (const r of repos) {
+  if (!byDev.has(r.dev)) byDev.set(r.dev, []);
+  byDev.get(r.dev).push(r);
+}
+for (const arr of byDev.values()) {
+  arr.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+}
+
+const devs = document.querySelector('[data-role="devs"]');
+if (devs) {
+  team.forEach((dev, idx) => {
+    const repoList = byDev.get(dev.id) ?? [];
+    const count = repoList.length;
+    const recent = repoList.slice(0, 3).map((r) => r.name);
+    const num = String(idx + 1).padStart(3, "0");
+
+    const li = document.createElement("li");
+    li.className = "dev";
+    li.style.setProperty("--frag-color", dev.color);
+    li.innerHTML = `
+      <a class="dev__link" href="./work.html">
+        <div class="dev__head">
+          <span class="dev__num">${num}</span>
+          <span class="dev__swatch" aria-hidden="true"></span>
+          <span class="dev__color">${dev.color_name ?? dev.color}</span>
+          <span class="dev__hex">${dev.color.toLowerCase()}</span>
+        </div>
+        <div class="dev__body">
+          <h3 class="dev__name">${dev.name}</h3>
+          <p class="dev__role">${dev.role}</p>
+        </div>
+        <ul class="dev__recent" aria-label="recent fragments">
+          ${recent.map((n) => `<li>${n}</li>`).join("")}
+          ${recent.length === 0 ? `<li class="dev__recent--empty">no fragments yet</li>` : ""}
+        </ul>
+        <div class="dev__foot">
+          <span>see ${dev.name}'s fragments</span>
+          <span class="dev__count">${count}</span>
+          <span class="dev__arrow" aria-hidden="true">→</span>
+        </div>
+      </a>
+    `;
+    devs.append(li);
+  });
+}
 
 /* ── scramble ───────────────────────────────────────────────────── */
 // Animates text through a glitchy pool of chars, revealing left→right.
