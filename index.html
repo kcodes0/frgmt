@@ -4,20 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>frgmt — small things that add up</title>
-    <meta name="description" content="frgmt is a software studio that builds small things that add up. Games, tools, protocols, education. Free by default. Open by default." />
+    <meta name="description" content="frgmt is a software studio. Small, finishable pieces over platforms — games, tools, standards, tutorials." />
     <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#efeade" />
+    <meta name="theme-color" content="#f4f1e9" />
     <link rel="icon" href="./src/mark.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <a class="skip" href="#thesis">skip to content</a>
+    <a class="skip" href="#top">skip to content</a>
 
     <header class="nav" aria-label="primary">
       <a class="nav__brand" href="#top" aria-label="frgmt — home">
@@ -29,341 +29,306 @@
       </a>
       <nav class="nav__links" aria-label="sections">
         <a href="#thesis">thesis</a>
-        <a href="#makes">makes</a>
+        <a href="#makes">work</a>
         <a href="#principles">principles</a>
-        <a href="#isnt">isn&rsquo;t</a>
         <a href="#team">team</a>
       </nav>
-      <span class="nav__meta" aria-hidden="true">
-        <span class="dot"></span>
-        <span>studio · open</span>
-      </span>
+      <a class="nav__cta" href="mailto:hello@frgmt.studio">
+        <span>hello@frgmt.studio</span>
+        <span aria-hidden="true" class="nav__cta-arrow">↗</span>
+      </a>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-heading">
         <div class="hero__grid">
           <div class="hero__mark-wrap" aria-hidden="true">
+            <div class="hero__grid-bg"></div>
             <svg class="hero__mark" viewBox="0 0 150 150" fill="currentColor">
-              <path class="m1" d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
-              <path class="m2" d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
-              <path class="l l1" d="m18.2 136.5v-17.1h-4.4v-3.8h4.4v-4.6c0-5.4 2.7-9.8 8.8-9.8 1.5 0 2.9 0.1 3.7 0.2l-0.3 4.8c-0.7-0.3-1.6-0.4-2.4-0.4-2.9 0-4.3 1.4-4.3 4.8v5h5.8v3.8h-5.8v17.1h-5.5z"/>
-              <path class="l l2" d="m33.3 136.5v-20.9h5.8v4.3h0.1c1.1-2.6 2.7-5 6.4-5 0.7 0 1.2 0.1 1.7 0.2v4.8c-0.7-0.3-1.2-0.4-2.1-0.4-3 0-6.1 1.8-6.1 6.3v10.7h-5.8z"/>
-              <path class="l l3" d="m67.6 115.6h5.1v19.1c0 6.5-3.1 11.8-11.9 11.8-3.4 0-6.6-0.8-9.7-2.3l1.5-4.3c2.3 1.4 4.9 2.3 7.5 2.3 5.7 0 7.3-3.1 7.3-7.6v-1.7h-0.1c-1.6 2.4-4 3.9-7.4 3.9-6.1 0-9.9-4.4-9.9-10.8 0-5.9 3.6-11 9.9-11 3.4 0 5.9 1.5 7.6 3.8h0.1v-3.2zm-6.2 17.3c3.9 0 5.9-2.8 5.9-6.7s-2.3-7.3-5.9-7.3-5.8 3-5.8 6.9c0 4.1 1.9 7.1 5.8 7.1z"/>
-              <path class="l l4" d="m114.3 136.5h-5.7v-10.7c0-3.2-0.5-6.9-4.1-6.9-3.5 0-5.4 3.3-5.4 6.6v11h-5.5v-10.7c0-3.3-0.6-6.9-4-6.9s-5.8 2.7-5.8 6.9v10.7h-5.4v-20.9h5.3v3.7h0.1c1.4-2.4 3.8-4.3 7.1-4.3 3.6 0 6 1.7 7.3 4.6 1.6-2.7 4.1-4.6 8.1-4.6 5.7 0 8 3.5 8 9.4v12.1z"/>
-              <path class="l l5" d="m122.2 107.5 5.9-0.7v8.8h6v3.8h-6v10.3c0 2.9 1 3.9 3.1 3.9 1.1 0 2.1-0.3 3.1-0.9l0.6 3.8c-1.4 0.7-3.2 1.1-5.1 1.1-4.5 0-7.6-1.7-7.6-6.9v-11.3h-4.3v-3.8h4.3v-8.1z"/>
+              <path d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
+              <path d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
+              <path d="m18.2 136.5v-17.1h-4.4v-3.8h4.4v-4.6c0-5.4 2.7-9.8 8.8-9.8 1.5 0 2.9 0.1 3.7 0.2l-0.3 4.8c-0.7-0.3-1.6-0.4-2.4-0.4-2.9 0-4.3 1.4-4.3 4.8v5h5.8v3.8h-5.8v17.1h-5.5z"/>
+              <path d="m33.3 136.5v-20.9h5.8v4.3h0.1c1.1-2.6 2.7-5 6.4-5 0.7 0 1.2 0.1 1.7 0.2v4.8c-0.7-0.3-1.2-0.4-2.1-0.4-3 0-6.1 1.8-6.1 6.3v10.7h-5.8z"/>
+              <path d="m67.6 115.6h5.1v19.1c0 6.5-3.1 11.8-11.9 11.8-3.4 0-6.6-0.8-9.7-2.3l1.5-4.3c2.3 1.4 4.9 2.3 7.5 2.3 5.7 0 7.3-3.1 7.3-7.6v-1.7h-0.1c-1.6 2.4-4 3.9-7.4 3.9-6.1 0-9.9-4.4-9.9-10.8 0-5.9 3.6-11 9.9-11 3.4 0 5.9 1.5 7.6 3.8h0.1v-3.2zm-6.2 17.3c3.9 0 5.9-2.8 5.9-6.7s-2.3-7.3-5.9-7.3-5.8 3-5.8 6.9c0 4.1 1.9 7.1 5.8 7.1z"/>
+              <path d="m114.3 136.5h-5.7v-10.7c0-3.2-0.5-6.9-4.1-6.9-3.5 0-5.4 3.3-5.4 6.6v11h-5.5v-10.7c0-3.3-0.6-6.9-4-6.9s-5.8 2.7-5.8 6.9v10.7h-5.4v-20.9h5.3v3.7h0.1c1.4-2.4 3.8-4.3 7.1-4.3 3.6 0 6 1.7 7.3 4.6 1.6-2.7 4.1-4.6 8.1-4.6 5.7 0 8 3.5 8 9.4v12.1z"/>
+              <path d="m122.2 107.5 5.9-0.7v8.8h6v3.8h-6v10.3c0 2.9 1 3.9 3.1 3.9 1.1 0 2.1-0.3 3.1-0.9l0.6 3.8c-1.4 0.7-3.2 1.1-5.1 1.1-4.5 0-7.6-1.7-7.6-6.9v-11.3h-4.3v-3.8h4.3v-8.1z"/>
             </svg>
-            <span class="hero__stamp" aria-hidden="true">est. mmxxvi</span>
           </div>
 
           <div class="hero__copy">
             <p class="eyebrow">
-              <span class="dot"></span>
-              <span>a software studio — pronounced <em>fragment</em></span>
+              <span>a software studio</span>
+              <span class="sep">·</span>
+              <span>pronounced <em>fragment</em></span>
             </p>
             <h1 class="hero__title" id="hero-heading">
-              <span class="line"><em>small</em> things</span>
-              <span class="line">that <em>add</em> up.</span>
+              Small things<br />that add up.
             </h1>
             <p class="hero__lede">
-              frgmt is &ldquo;fragment&rdquo; with the vowels knocked out. The name
-              <span class="inline-ghost">demonstrates</span> the idea — you can still read it;
-              pieces are missing, but enough is there. That&rsquo;s the whole thesis in five
-              letters.
+              frgmt makes small, finishable pieces instead of platforms — games,
+              tools, standards, tutorials. Most are free. All are open where
+              they can be.
             </p>
             <div class="hero__cta">
-              <a class="button button--primary" href="#makes">see the fragments</a>
-              <a class="button button--ghost" href="#thesis">read the thesis</a>
+              <a class="link link--primary" href="#thesis">
+                <span>Read the thesis</span>
+                <span class="link__arrow" aria-hidden="true">↓</span>
+              </a>
+              <a class="link link--ghost" href="#makes">
+                <span>See the work</span>
+                <span class="link__arrow" aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
         </div>
-
-        <aside class="ticker" aria-hidden="true">
-          <div class="ticker__track">
-            <span>· small over scalable</span>
-            <span>· open by default</span>
-            <span>· ethics over profit</span>
-            <span>· done beats perfect</span>
-            <span>· accessibility is a feature</span>
-            <span>· no VC &mdash; no exit &mdash; no theater</span>
-            <span>· pieces compound</span>
-            <span>· small over scalable</span>
-            <span>· open by default</span>
-            <span>· ethics over profit</span>
-            <span>· done beats perfect</span>
-            <span>· accessibility is a feature</span>
-            <span>· no VC &mdash; no exit &mdash; no theater</span>
-            <span>· pieces compound</span>
-          </div>
-        </aside>
       </section>
 
-      <section class="thesis" id="thesis" aria-labelledby="thesis-heading">
+      <section class="block" id="thesis" aria-labelledby="thesis-heading">
         <header class="section-head">
-          <span class="section-head__idx">01</span>
-          <span class="section-head__eyebrow">the thesis</span>
-          <h2 class="section-head__title" id="thesis-heading">
-            <span data-frag="th thss">the thesis</span>
+          <span class="section-head__idx">01 / thesis</span>
+          <h2 class="section-head__title" id="thesis-heading" data-frag="th · thss">
+            The thesis.
           </h2>
         </header>
 
         <div class="thesis__body">
           <p class="pull">
-            Most software companies want to be <em>the platform</em>. The ecosystem. The
-            one-stop shop. frgmt goes the other direction.
+            Most software companies want to be <em>the platform</em>. frgmt goes
+            the other direction.
           </p>
           <div class="thesis__cols">
             <p>
-              Make the smallest useful thing. Make it well. Give it away. Let it connect to
-              whatever else people are building.
+              Make the smallest useful thing. Make it well. Give it away. Let it
+              connect to whatever else people are building.
             </p>
             <p>
-              A tool that does one job. A game that takes twenty minutes. A tutorial that
-              teaches one concept. A protocol that slots into someone else&rsquo;s stack.
-              None of these try to be the whole &mdash; they&rsquo;re <em>pieces</em>, and
-              that&rsquo;s the point.
+              A tool that does one job. A game that takes twenty minutes. A
+              tutorial on one concept. A protocol that slots into someone
+              else's stack. Pieces — not platforms.
             </p>
             <p class="thesis__bet">
-              <span class="label">the bet &mdash;</span>
-              small, thoughtful pieces compound. A hundred good fragments beat one mediocre
-              platform.
+              The bet: small, thoughtful pieces compound. A hundred good
+              fragments beat one mediocre platform.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="makes" id="makes" aria-labelledby="makes-heading">
+      <section class="block" id="makes" aria-labelledby="makes-heading">
         <header class="section-head">
-          <span class="section-head__idx">02</span>
-          <span class="section-head__eyebrow">what frgmt makes</span>
-          <h2 class="section-head__title" id="makes-heading">
-            <span data-frag="wht frgmt mks">what frgmt makes</span>
+          <span class="section-head__idx">02 / work</span>
+          <h2 class="section-head__title" id="makes-heading" data-frag="wht w mk">
+            What we make.
           </h2>
         </header>
 
         <ol class="tiles" role="list">
-          <li class="tile" style="--i:0">
-            <span class="tile__idx">i.</span>
+          <li class="tile">
+            <span class="tile__num">i</span>
             <h3 class="tile__name">Games</h3>
             <p class="tile__desc">
               Small, finishable, memorable. The opposite of 100-hour time sinks.
             </p>
-            <span class="tile__tag">finishable</span>
           </li>
-          <li class="tile" style="--i:1">
-            <span class="tile__idx">ii.</span>
+          <li class="tile">
+            <span class="tile__num">ii</span>
             <h3 class="tile__name">Developer tools</h3>
             <p class="tile__desc">
-              Sharp, scoped, usable in under five minutes. One job, done precisely.
+              Sharp, scoped, usable in under five minutes. One job, done
+              precisely.
             </p>
-            <span class="tile__tag">&lt; 5&nbsp;min</span>
           </li>
-          <li class="tile" style="--i:2">
-            <span class="tile__idx">iii.</span>
-            <h3 class="tile__name">Things for non-developers</h3>
+          <li class="tile">
+            <span class="tile__num">iii</span>
+            <h3 class="tile__name">Software for everyone</h3>
             <p class="tile__desc">
-              Software that teaches as it works &mdash; without the condescension layer.
+              Things for people who've never opened a terminal. Teaches as it
+              works, without condescension.
             </p>
-            <span class="tile__tag">for everyone</span>
           </li>
-          <li class="tile" style="--i:3">
-            <span class="tile__idx">iv.</span>
+          <li class="tile">
+            <span class="tile__num">iv</span>
             <h3 class="tile__name">Educational material</h3>
             <p class="tile__desc">
-              One idea per fragment. Digestible. Honest about what it doesn&rsquo;t cover.
+              One idea per fragment. Digestible. Honest about what it doesn't
+              cover.
             </p>
-            <span class="tile__tag">one idea</span>
           </li>
-          <li class="tile tile--wide" style="--i:4">
-            <span class="tile__idx">v.</span>
-            <h3 class="tile__name">Open standards &amp; weird experiments</h3>
+          <li class="tile">
+            <span class="tile__num">v</span>
+            <h3 class="tile__name">Standards &amp; experiments</h3>
             <p class="tile__desc">
-              Protocols, specs, ideas that don&rsquo;t fit a product shape but deserve to
-              exist anyway.
+              Protocols, specs, and odd ideas that don't fit a product shape
+              but deserve to exist.
             </p>
-            <span class="tile__tag">free &middot; open</span>
+          </li>
+          <li class="tile tile--meta">
+            <p>
+              Everything free. Premium only for things that genuinely cost
+              to run.
+            </p>
           </li>
         </ol>
-
-        <p class="makes__note">
-          <svg class="chip" viewBox="25 0 110 90" aria-hidden="true" fill="currentColor">
-            <path d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
-            <path d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
-          </svg>
-          Everything free. Premium only for things that genuinely cost to run.
-        </p>
       </section>
 
-      <section class="principles" id="principles" aria-labelledby="principles-heading">
+      <section class="block" id="principles" aria-labelledby="principles-heading">
         <header class="section-head">
-          <span class="section-head__idx">03</span>
-          <span class="section-head__eyebrow">how frgmt works</span>
-          <h2 class="section-head__title" id="principles-heading">
-            <span data-frag="th prncpls">the principles</span>
+          <span class="section-head__idx">03 / how it works</span>
+          <h2 class="section-head__title" id="principles-heading" data-frag="prncpls">
+            Principles.
           </h2>
         </header>
 
         <ol class="principles__list" role="list">
           <li class="principle">
             <span class="principle__num">01</span>
-            <h3>Ethics over profit.</h3>
-            <p>
-              If a choice makes more money but makes the product worse or the user more
-              exploited, it doesn&rsquo;t get made. Boring. Non-negotiable.
-            </p>
+            <div class="principle__body">
+              <h3>Ethics over profit.</h3>
+              <p>
+                If a choice makes more money but makes the product worse or the
+                user more exploited, it doesn't get made. Non-negotiable.
+              </p>
+            </div>
           </li>
           <li class="principle">
             <span class="principle__num">02</span>
-            <h3>Accessibility is a feature, not a checkbox.</h3>
-            <p>
-              If it doesn&rsquo;t work with a screen reader, on a cheap laptop, for someone
-              who&rsquo;s never opened a terminal &mdash; it&rsquo;s not done.
-            </p>
+            <div class="principle__body">
+              <h3>Accessibility is a feature, not a checkbox.</h3>
+              <p>
+                If it doesn't work with a screen reader, on a cheap laptop, for
+                someone who's never opened a terminal — it's not done.
+              </p>
+            </div>
           </li>
           <li class="principle">
             <span class="principle__num">03</span>
-            <h3>Inclusivity without performance.</h3>
-            <p>
-              No rainbow logo in June and bad behavior in July. Build things that work for
-              everyone, and hire that way too.
-            </p>
+            <div class="principle__body">
+              <h3>Inclusivity without performance.</h3>
+              <p>
+                No rainbow logo in June and bad behavior in July. Build for
+                everyone. Hire that way too.
+              </p>
+            </div>
           </li>
           <li class="principle">
             <span class="principle__num">04</span>
-            <h3>Small over scalable.</h3>
-            <p>
-              A fragment that does one thing beautifully beats a framework nobody asked for.
-            </p>
+            <div class="principle__body">
+              <h3>Small over scalable.</h3>
+              <p>
+                A fragment that does one thing beautifully beats a framework
+                nobody asked for.
+              </p>
+            </div>
           </li>
           <li class="principle">
             <span class="principle__num">05</span>
-            <h3>Open by default.</h3>
-            <p>Source available, standards preferred, lock-in avoided.</p>
+            <div class="principle__body">
+              <h3>Open by default.</h3>
+              <p>Source available. Standards preferred. Lock-in avoided.</p>
+            </div>
           </li>
           <li class="principle">
             <span class="principle__num">06</span>
-            <h3>Done is better than perfect.</h3>
-            <p>Ship the fragment. Polish it later. Other fragments are waiting.</p>
+            <div class="principle__body">
+              <h3>Done is better than perfect.</h3>
+              <p>Ship the fragment. Polish it later. Other fragments are waiting.</p>
+            </div>
           </li>
         </ol>
       </section>
 
-      <section class="isnt" id="isnt" aria-labelledby="isnt-heading">
-        <header class="section-head section-head--inverse">
-          <span class="section-head__idx">04</span>
-          <span class="section-head__eyebrow">counterweights</span>
-          <h2 class="section-head__title" id="isnt-heading">
-            <span data-frag="wht frgmt sn't">what frgmt isn&rsquo;t</span>
+      <section class="block" id="isnt" aria-labelledby="isnt-heading">
+        <header class="section-head">
+          <span class="section-head__idx">04 / counterweights</span>
+          <h2 class="section-head__title" id="isnt-heading" data-frag="wht frgmt sn't">
+            What frgmt isn't.
           </h2>
         </header>
 
         <ul class="isnt__list" role="list">
           <li>
             <span class="strike">A startup.</span>
-            <em>No VC, no exit, no growth-at-all-costs theater.</em>
+            <span class="isnt__note">No VC, no exit, no growth-at-all-costs theater.</span>
           </li>
           <li>
             <span class="strike">A platform.</span>
-            <em>Fragments don&rsquo;t aspire to be ecosystems.</em>
+            <span class="isnt__note">Fragments don't aspire to be ecosystems.</span>
           </li>
           <li>
             <span class="strike">A bootcamp or content mill.</span>
-            <em>Education is a side effect of making real things.</em>
+            <span class="isnt__note">Education is a side effect of making real things.</span>
           </li>
           <li>
-            <span class="strike">Serious in the self-important sense.</span>
-            <em>Dorky? yes. Solemn? no.</em>
+            <span class="strike">Solemn.</span>
+            <span class="isnt__note">Dorky? yes. Self-important? no.</span>
           </li>
         </ul>
       </section>
 
-      <section class="team" id="team" aria-labelledby="team-heading">
+      <section class="block" id="team" aria-labelledby="team-heading">
         <header class="section-head">
-          <span class="section-head__idx">05</span>
-          <span class="section-head__eyebrow">the shape of the team</span>
-          <h2 class="section-head__title" id="team-heading">
-            <span data-frag="n + pc">one + a piece</span>
+          <span class="section-head__idx">05 / team</span>
+          <h2 class="section-head__title" id="team-heading" data-frag="n">
+            One, for now.
           </h2>
         </header>
 
         <div class="team__body">
           <p class="team__lede">
-            Right now it&rsquo;s one person &mdash; the founder and lead. That&rsquo;s fine.
-            frgmt is designed to work at one person and keep working as more show up.
+            Right now it's one person — the founder and lead. frgmt is
+            designed to work at one and keep working as more show up.
           </p>
           <p>
-            Each contributor brings a fragment. The studio is the sum. When people join,
-            they don&rsquo;t become cogs in a roadmap &mdash; they bring what they&rsquo;re
-            good at, make fragments of their own, and frgmt gets bigger the way a mosaic
-            gets bigger: <em>piece by piece</em>, not by dilution.
+            Each contributor brings a fragment. The studio is the sum. No cogs
+            in a roadmap — people bring what they're good at, make fragments of
+            their own, and frgmt gets bigger the way a mosaic does: piece by
+            piece, not by dilution.
           </p>
-
-          <div class="mosaic" aria-hidden="true">
-            <span style="--r: -7deg;  --d: 0ms;"></span>
-            <span style="--r: 12deg;  --d: 80ms;"></span>
-            <span style="--r: -14deg; --d: 160ms;"></span>
-            <span style="--r: 4deg;   --d: 240ms;"></span>
-            <span style="--r: 22deg;  --d: 320ms;"></span>
-            <span style="--r: -3deg;  --d: 400ms;"></span>
-            <span style="--r: 18deg;  --d: 480ms;"></span>
-            <span style="--r: -11deg; --d: 560ms;"></span>
-            <span style="--r: 8deg;   --d: 640ms;"></span>
-          </div>
         </div>
       </section>
     </main>
 
     <footer class="foot" aria-label="footer">
-      <div class="foot__grid">
-        <div class="foot__brand">
-          <svg class="foot__mark" viewBox="0 0 150 150" fill="currentColor" aria-hidden="true">
+      <div class="foot__top">
+        <a href="#top" class="foot__brand" aria-label="frgmt — home">
+          <svg class="foot__mark" viewBox="25 0 110 90" fill="currentColor" aria-hidden="true">
             <path d="m133.9 3.2c-17.4 2.3-49.8 8.3-77.9 19.9-5.8 2.4-15.1 6.2-23.6 11.7-0.7 0.5-1.3 1.7-2.5 6.5-2.9 11.8-7.9 33-8.1 43.1 0 1 0.4 1.6 1.3 1.6l39-0.1c0.6 0 1.4-0.2 1.9-0.6l66.2-50.4c0.7-0.6 4.6-22.7 6.1-29.6 0.3-1.7-1-2.3-2.4-2.1z"/>
             <path d="m101.5 66.3 16.5 18.8c0.5 0.5 1 0.9 1.5 0.9h1.4c0.6 0 0.7-1.1 0.8-1.7l6.1-40.4-26.3 22.4z"/>
-            <path d="m18.2 136.5v-17.1h-4.4v-3.8h4.4v-4.6c0-5.4 2.7-9.8 8.8-9.8 1.5 0 2.9 0.1 3.7 0.2l-0.3 4.8c-0.7-0.3-1.6-0.4-2.4-0.4-2.9 0-4.3 1.4-4.3 4.8v5h5.8v3.8h-5.8v17.1h-5.5z"/>
-            <path d="m33.3 136.5v-20.9h5.8v4.3h0.1c1.1-2.6 2.7-5 6.4-5 0.7 0 1.2 0.1 1.7 0.2v4.8c-0.7-0.3-1.2-0.4-2.1-0.4-3 0-6.1 1.8-6.1 6.3v10.7h-5.8z"/>
-            <path d="m67.6 115.6h5.1v19.1c0 6.5-3.1 11.8-11.9 11.8-3.4 0-6.6-0.8-9.7-2.3l1.5-4.3c2.3 1.4 4.9 2.3 7.5 2.3 5.7 0 7.3-3.1 7.3-7.6v-1.7h-0.1c-1.6 2.4-4 3.9-7.4 3.9-6.1 0-9.9-4.4-9.9-10.8 0-5.9 3.6-11 9.9-11 3.4 0 5.9 1.5 7.6 3.8h0.1v-3.2zm-6.2 17.3c3.9 0 5.9-2.8 5.9-6.7s-2.3-7.3-5.9-7.3-5.8 3-5.8 6.9c0 4.1 1.9 7.1 5.8 7.1z"/>
-            <path d="m114.3 136.5h-5.7v-10.7c0-3.2-0.5-6.9-4.1-6.9-3.5 0-5.4 3.3-5.4 6.6v11h-5.5v-10.7c0-3.3-0.6-6.9-4-6.9s-5.8 2.7-5.8 6.9v10.7h-5.4v-20.9h5.3v3.7h0.1c1.4-2.4 3.8-4.3 7.1-4.3 3.6 0 6 1.7 7.3 4.6 1.6-2.7 4.1-4.6 8.1-4.6 5.7 0 8 3.5 8 9.4v12.1z"/>
-            <path d="m122.2 107.5 5.9-0.7v8.8h6v3.8h-6v10.3c0 2.9 1 3.9 3.1 3.9 1.1 0 2.1-0.3 3.1-0.9l0.6 3.8c-1.4 0.7-3.2 1.1-5.1 1.1-4.5 0-7.6-1.7-7.6-6.9v-11.3h-4.3v-3.8h4.3v-8.1z"/>
           </svg>
-          <p class="foot__line">
-            a software studio that builds small things that add up.
-          </p>
-        </div>
+          <span>frgmt</span>
+        </a>
         <div class="foot__cols">
-          <div>
-            <h4>fragments</h4>
-            <ul>
-              <li><a href="#makes">games</a></li>
-              <li><a href="#makes">developer tools</a></li>
-              <li><a href="#makes">education</a></li>
-              <li><a href="#makes">protocols</a></li>
-            </ul>
-          </div>
           <div>
             <h4>studio</h4>
             <ul>
               <li><a href="#thesis">thesis</a></li>
               <li><a href="#principles">principles</a></li>
-              <li><a href="#isnt">isn&rsquo;t</a></li>
-              <li><a href="#team">team</a></li>
+              <li><a href="#isnt">what it isn't</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>work</h4>
+            <ul>
+              <li><a href="#makes">games</a></li>
+              <li><a href="#makes">developer tools</a></li>
+              <li><a href="#makes">education</a></li>
+              <li><a href="#makes">standards</a></li>
             </ul>
           </div>
           <div>
             <h4>elsewhere</h4>
             <ul>
               <li><a href="mailto:hello@frgmt.studio">hello@frgmt.studio</a></li>
-              <li><a href="#">/github</a></li>
-              <li><a href="#">/rss</a></li>
+              <li><a href="#">github</a></li>
+              <li><a href="#">rss</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="foot__meta">
         <span>© mmxxvi frgmt</span>
-        <span class="spacer"></span>
+        <span>a software studio</span>
         <span>pronounced <em>fragment</em></span>
-        <span class="spacer"></span>
-        <span>free &amp; open where it can be</span>
       </div>
     </footer>
 
