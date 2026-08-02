@@ -113,6 +113,47 @@ def still(args) -> list[Path]:
     return written
 
 
+# ------------------------------------------------------- dedicated stills
+
+def gen(args) -> list[Path]:
+    """
+    POST /api/v1/images/generations: the dedicated image endpoint, serving
+    models that never appear in chat completions (FLUX.2, Seedream 4.5,
+    Recraft). Unlike `still` it accepts an explicit size, which is the only
+    way to get a true 9:16 out of these models.
+    """
+    out_dir = Path(args.out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    with httpx.Client(timeout=300) as c:
+        for i in range(1, args.count + 1):
+            body: dict = {"model": args.model, "prompt": args.prompt}
+            if args.size:
+                body["size"] = args.size
+            r = c.post(
+                f"{API}/images/generations",
+                headers={"Authorization": f"Bearer {key()}"},
+                json=body,
+            )
+            if r.status_code >= 400:
+                sys.exit(f"openrouter {r.status_code}: {r.text[:500]}")
+            data = r.json().get("data") or []
+            if not data:
+                sys.exit(f"no image returned: {r.text[:400]}")
+            for d in data:
+                blob = (
+                    base64.b64decode(d["b64_json"])
+                    if d.get("b64_json")
+                    else c.get(d["url"], timeout=120).content
+                )
+                p = out_dir / f"{args.name}-{i:02d}.png"
+                p.write_bytes(blob)
+                sidecar(p, {"prompt": args.prompt, "model": args.model, "size": args.size})
+                written.append(p)
+                print(f"  {p}  {len(blob)/1024:.0f}kb")
+    return written
+
+
 # ------------------------------------------------------------------ clips
 
 def submit_clip(c: httpx.Client, *, model, prompt, duration, size, first=None,
@@ -227,6 +268,15 @@ def main() -> None:
     s.add_argument("--ref", help="reference image for consistency")
     s.add_argument("--out", default="design/assets/raw")
     s.set_defaults(fn=still)
+
+    g = sub.add_parser("gen", help="stills from the dedicated image endpoint")
+    g.add_argument("prompt")
+    g.add_argument("--model", default="black-forest-labs/flux.2-max")
+    g.add_argument("--size", default=None, help='e.g. 1440x2560 (omit for model default)')
+    g.add_argument("--count", type=int, default=1)
+    g.add_argument("--name", default="gen")
+    g.add_argument("--out", default="design/assets/raw")
+    g.set_defaults(fn=gen)
 
     v = sub.add_parser("clip", help="one video clip")
     v.add_argument("prompt")

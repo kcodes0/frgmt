@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { initialTheme, persist, swapTheme, type Theme } from "./theme";
 import Wash from "./Wash";
+import Plate from "./Plate";
 
 /**
- * Wall-label layout. One narrow text column parked off-centre, with the objects
- * in the wide column beside it. Each object is position:sticky inside its own
- * project row, so it holds while you read that project and releases at the next
- * one. No scroll listener and no intersection observer: the browser does it.
+ * Wall-label layout. One narrow text column parked off-centre, and one tall
+ * dithered photograph — the plate — hanging fixed down the right side of the
+ * viewport. The page scrolls past the plate; the plate drifts and dissolves in
+ * response. See Plate.tsx.
  */
 
 type Work = {
@@ -15,8 +16,6 @@ type Work = {
   spec: string;
   body: string;
   more?: { label: string; href: string };
-  /** the object in the right column, and what it is */
-  media: { stem: string; alt: string };
 };
 
 const WORK: Work[] = [
@@ -26,30 +25,18 @@ const WORK: Work[] = [
     spec: "Swift · MIT · alpha",
     body: "On-device autocomplete for macOS. A faint suggestion appears at your caret in almost any text field and streams in word by word. It runs against a small local model through llama.cpp, so there is no cloud, no account, and nothing leaves the Mac.",
     more: { label: "typr.frgmt.xyz", href: "https://typr.frgmt.xyz" },
-    media: {
-      stem: "screen",
-      alt: "A folded plaster screen of five narrow panels, one drifted open.",
-    },
   },
   {
     name: "Beckett",
     href: "https://github.com/kowo-co/beckett",
     spec: "TypeScript · MIT · Kowo",
     body: "A Discord-native AI engineer. You mention it, it judges how much effort the request deserves, and for real work it opens a numbered task and hands the branches to a pool of coding agents running in isolated worktrees. One agent does the talking. The rest do the building.",
-    media: {
-      stem: "fleet",
-      alt: "One tall plaster slab standing in front of a receding row of five smaller ones.",
-    },
   },
   {
     name: "Jingle",
     href: "https://github.com/kowo-co/jingle-jingle",
     spec: "Rust · Apache 2.0 · Kowo",
     body: "A password manager for AI agents that never shows the agent a password. Secrets leave through four doors: a child process, the clipboard for thirty seconds, a TOTP code, or a print you ask for by name. Everything else comes back redacted, and each audit line carries the hash of the one before it.",
-    media: {
-      stem: "vault",
-      alt: "A solid plaster block with four narrow slots cut through its face.",
-    },
   },
 ];
 
@@ -125,7 +112,7 @@ function useReducedMotion() {
 export default function App() {
   const reduced = useReducedMotion();
   const [theme, setTheme] = useState<Theme>("light");
-  /** objects sit out the wipe, then come back */
+  /** the plate sits out the wipe, then comes back */
   const [settling, setSettling] = useState(false);
   /** the arrival animation only exists as a response to a switch */
   const [swapped, setSwapped] = useState(false);
@@ -148,8 +135,8 @@ export default function App() {
       ? { x: box.left + box.width / 2, y: box.top + box.height / 2 }
       : { x: window.innerWidth, y: 0 };
 
-    // Hiding the objects has to happen in the same synchronous render as the
-    // theme change, so the wipe's snapshot of the new page has them already
+    // Hiding the plate has to happen in the same synchronous render as the
+    // theme change, so the wipe's snapshot of the new page has it already
     // absent. Setting it beforehand would not be flushed in time.
     await swapTheme(
       next,
@@ -171,6 +158,7 @@ export default function App() {
       data-swapped={swapped ? "" : undefined}
     >
       <Wash theme={theme} reduced={reduced} />
+      <Plate theme={theme} reduced={reduced} />
 
       <a className="skip" href="#main">
         Skip to content
@@ -226,7 +214,7 @@ export default function App() {
 
       <section className="works" aria-label="Work" id="work">
         <h2 className="key col-slot">Work</h2>
-        {WORK.map((w, i) => (
+        {WORK.map((w) => (
           <article className="work" key={w.name} id={w.name.toLowerCase()}>
             <div className="work-text">
               <h3>
@@ -239,22 +227,6 @@ export default function App() {
                 </p>
               )}
             </div>
-            <figure className="work-media">
-              {/*
-                Keyed on the theme so React swaps the element rather than the
-                attribute. A fresh node restarts the CSS animation, which is what
-                makes each object arrive instead of blinking.
-              */}
-              <img
-                key={`${w.media.stem}-${theme}`}
-                className="object"
-                style={{ ["--i" as string]: i }}
-                src={`/media/${w.media.stem}${theme === "dark" ? "-dark" : ""}.webp`}
-                alt={w.media.alt}
-                loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
-              />
-            </figure>
           </article>
         ))}
       </section>
