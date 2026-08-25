@@ -41,7 +41,7 @@ export default function Home() {
   const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
-    document.title = "Jason Weiss Zeledon";
+    document.title = "jwz - frgmt.xyz";
     Promise.allSettled([listPosts(), listNotes()]).then(([posts, notes]) => {
       const items: Recent[] = [];
       if (posts.status === "fulfilled")

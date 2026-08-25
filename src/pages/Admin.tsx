@@ -465,7 +465,7 @@ export default function Admin() {
   const [problem, setProblem] = useState("");
 
   useEffect(() => {
-    document.title = "Admin — frgmt";
+    document.title = "admin — jwz - frgmt.xyz";
     me().then((m) => {
       setWho(m?.username ?? null);
       setChecked(true);

@@ -12,11 +12,11 @@ export default function PostPage({ slug }: { slug: string }) {
     getPost(slug)
       .then((p) => {
         setPost(p);
-        document.title = `${p.title} — frgmt`;
+        document.title = `${p.title} — jwz - frgmt.xyz`;
       })
       .catch(() => {
         setMissing(true);
-        document.title = "Not found — frgmt";
+        document.title = "not found — jwz - frgmt.xyz";
       });
   }, [slug]);
 

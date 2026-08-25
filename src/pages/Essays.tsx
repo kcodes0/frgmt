@@ -9,7 +9,7 @@ export default function Essays() {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    document.title = "Essays — frgmt";
+    document.title = "essays — jwz - frgmt.xyz";
     listPosts()
       .then(setPosts)
       .catch(() => setFailed(true));

@@ -13,7 +13,7 @@ export default function Notes() {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    document.title = "Notes — frgmt";
+    document.title = "notes — jwz - frgmt.xyz";
     listNotes()
       .then(setNotes)
       .catch(() => setFailed(true));

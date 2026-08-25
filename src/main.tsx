@@ -11,7 +11,7 @@ import "./styles.css";
 
 function NotFound() {
   useEffect(() => {
-    document.title = "Not found — frgmt";
+    document.title = "not found — jwz - frgmt.xyz";
   }, []);
   return (
     <Chrome>

@@ -157,9 +157,11 @@ textarea:focus-visible {
   padding-top: clamp(20px, 4vh, 44px);
 }
 
-/* the wordmark: Quicksand letterforms filled with painted ink */
+/* the wordmark: Quicksand letterforms filled with painted ink. The line
+   box must contain the g's descender: background-clip only paints inside
+   the element, so a tight box slices the glyph. */
 .mark {
-  font: 700 21px/1 var(--sans);
+  font: 700 21px/1.5 var(--sans);
   border-bottom: none;
   letter-spacing: 0.02em;
   background: var(--markwash) left center / cover no-repeat;
