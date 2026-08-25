@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Chrome from "../Chrome";
 import { getPost, type Post } from "../api";
 import { renderMarkdown } from "../markdown";
+import { fmtDate, stampVar } from "../paint";
 
 export default function PostPage({ slug }: { slug: string }) {
   const [post, setPost] = useState<Post | null>(null);
@@ -20,15 +21,15 @@ export default function PostPage({ slug }: { slug: string }) {
   }, [slug]);
 
   return (
-    <Chrome>
-      <main id="main" className="bcol">
-        {!post && !missing && <p className="key">Loading…</p>}
+    <Chrome room="essays">
+      <main id="main" style={{ marginTop: "clamp(32px, 6vh, 64px)" }}>
+        {!post && !missing && <p className="spec">Loading…</p>}
 
         {missing && (
           <>
-            <h1 className="line">There is no post at this address.</h1>
-            <p>
-              <a href="/blog">All posts</a>
+            <h1 className="line">There is no essay at this address.</h1>
+            <p className="more">
+              <a href="/essays">All essays</a>
             </p>
           </>
         )}
@@ -36,25 +37,27 @@ export default function PostPage({ slug }: { slug: string }) {
         {post && (
           <>
             <p className="more back">
-              <a href="/blog">&larr; all posts</a>
+              <a href="/essays">&larr; all essays</a>
             </p>
             <article>
+              <header className="note-head" style={{ marginBottom: 14 }}>
+                <span
+                  className="stamp"
+                  style={{ ["--stamp" as string]: stampVar("essay", post.slug) }}
+                  aria-hidden="true"
+                />
+                <span className="spec">{fmtDate(post.created_at)}</span>
+              </header>
               <h1 className="line">{post.title}</h1>
-              <p className="key">
-                {new Date(post.created_at.replace(" ", "T") + "Z").toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
               <div
                 className="prose"
                 // renderMarkdown escapes before it transforms; output is safe
                 dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
               />
             </article>
+            <hr className="divider" aria-hidden="true" />
             <p className="end">
-              <a href="/blog">More writing</a>
+              <a href="/essays">More essays</a>
             </p>
           </>
         )}

@@ -2,12 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import Chrome from "../Chrome";
 import {
   adminList,
+  adminNotes,
+  createNote,
   createPost,
+  deleteNote,
   deletePost,
   login,
   logout,
   me,
+  updateNote,
   updatePost,
+  type Note,
   type Post,
   type PostDraft,
 } from "../api";
@@ -259,7 +264,7 @@ function Editor({
             checked={published}
             onChange={(e) => setPublished(e.target.checked)}
           />
-          Live on /blog
+          Live on /essays
         </label>
         <span className="spec">{words} words</span>
         <span className="editbar-actions">
@@ -270,6 +275,131 @@ function Editor({
       </div>
       {problem && <p className="problem">{problem}</p>}
     </main>
+  );
+}
+
+/* ---------------- notes desk ---------------- */
+
+function NotesDesk() {
+  const [notes, setNotes] = useState<Note[] | null>(null);
+  const [content, setContent] = useState("");
+  const [published, setPublished] = useState(true);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [problem, setProblem] = useState("");
+
+  const refresh = () =>
+    adminNotes()
+      .then(setNotes)
+      .catch((e) => setProblem(e instanceof Error ? e.message : "could not load notes"));
+
+  useEffect(() => {
+    void refresh();
+  }, []);
+
+  const save = async () => {
+    setBusy(true);
+    setProblem("");
+    try {
+      const draft = { content, published };
+      if (editingId) await updateNote(editingId, draft);
+      else await createNote(draft);
+      setContent("");
+      setPublished(true);
+      setEditingId(null);
+      await refresh();
+    } catch (e) {
+      setProblem(e instanceof Error ? e.message : "save failed");
+    }
+    setBusy(false);
+  };
+
+  const remove = async (n: Note) => {
+    if (!confirm("Delete this note for good?")) return;
+    try {
+      await deleteNote(n.id);
+      setNotes((ns) => ns?.filter((x) => x.id !== n.id) ?? ns);
+    } catch (e) {
+      setProblem(e instanceof Error ? e.message : "delete failed");
+    }
+  };
+
+  return (
+    <section style={{ marginTop: 56 }}>
+      <h2 className="key">Notes</h2>
+
+      <textarea
+        className="pad short"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="A fragment. Markdown works; keep it under a paragraph."
+        spellCheck
+      />
+      <div className="editbar">
+        <label className="check">
+          <input
+            type="checkbox"
+            checked={published}
+            onChange={(e) => setPublished(e.target.checked)}
+          />
+          Live on /notes
+        </label>
+        <span className="editbar-actions">
+          {editingId && (
+            <button
+              className="lamp"
+              style={{ marginRight: 14 }}
+              onClick={() => {
+                setEditingId(null);
+                setContent("");
+              }}
+            >
+              cancel
+            </button>
+          )}
+          <button className="lamp" disabled={busy || !content.trim()} onClick={save}>
+            {busy ? "saving…" : editingId ? "save note" : "add note"}
+          </button>
+        </span>
+      </div>
+      {problem && <p className="problem">{problem}</p>}
+
+      <div style={{ marginTop: 24 }}>
+        {notes?.map((n) => (
+          <article className="entry" key={n.id} style={{ marginBottom: 16 }}>
+            <p className="note-line" style={{ fontSize: 15 }}>
+              {n.content.length > 120 ? n.content.slice(0, 120) + "…" : n.content}
+            </p>
+            <p className="more admin-actions">
+              <span className="spec">
+                {n.published ? "live" : "draft"} · {fmtDate(n.created_at)}
+              </span>{" "}
+              <a
+                href={`/admin/note/${n.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setEditingId(n.id);
+                  setContent(n.content);
+                  setPublished(!!n.published);
+                }}
+              >
+                edit
+              </a>{" "}
+              <a
+                href={`/admin/note-delete/${n.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  void remove(n);
+                }}
+              >
+                delete
+              </a>
+            </p>
+          </article>
+        ))}
+        {notes?.length === 0 && <p className="spec">No fragments yet.</p>}
+      </div>
+    </section>
   );
 }
 
@@ -395,7 +525,7 @@ export default function Admin() {
             {posts?.map((p) => (
               <article className="entry" key={p.id}>
                 <h3>
-                  <a href={`/blog/${p.slug}`}>{p.title}</a>{" "}
+                  <a href={`/essays/${p.slug}`}>{p.title}</a>{" "}
                   <span className="spec">
                     {p.published ? "live" : "draft"} · {fmtDate(p.created_at)}
                   </span>
@@ -423,6 +553,8 @@ export default function Admin() {
               </article>
             ))}
           </section>
+
+          <NotesDesk />
 
           <p className="end">
             signed in as {who} ·{" "}

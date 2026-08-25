@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { initialTheme, persist, swapTheme, type Theme } from "./theme";
-import Wash from "./Wash";
 
 /**
- * The room around the blog and admin pages: the same wash, the same mark,
- * the same lamp with the circular wipe, on the same paper. The home page
- * keeps its own copy of this logic because its grid hands the lamp a
- * specific track; these pages use the simpler vitrine frame.
+ * The paper around every page: the italic mark, the room links, and the
+ * lamp. The theme swap keeps its circular wipe from the old site; it was
+ * the one piece of route 03 worth carrying across.
  */
-export default function Chrome({ children }: { children: ReactNode }) {
+export default function Chrome({
+  children,
+  room,
+}: {
+  children: ReactNode;
+  room?: "essays" | "notes";
+}) {
   const [theme, setTheme] = useState<Theme>("light");
   const [reduced, setReduced] = useState(true);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -34,23 +38,32 @@ export default function Chrome({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="frame">
-      <Wash theme={theme} reduced={reduced} />
+    <div className="page">
       <a className="skip" href="#main">
         Skip to content
       </a>
-      <a className="mark" href="/">
-        frgmt
-      </a>
-      <button
-        ref={toggleRef}
-        className="lamp"
-        onClick={onToggle}
-        aria-pressed={theme === "dark"}
-        aria-label={theme === "dark" ? "Switch to light" : "Switch to dark"}
-      >
-        {theme === "dark" ? "light" : "dark"}
-      </button>
+      <header className="top">
+        <a className="mark" href="/">
+          frgmt
+        </a>
+        <nav aria-label="Rooms">
+          <a href="/essays" aria-current={room === "essays" ? "page" : undefined}>
+            essays
+          </a>
+          <a href="/notes" aria-current={room === "notes" ? "page" : undefined}>
+            notes
+          </a>
+        </nav>
+        <button
+          ref={toggleRef}
+          className="lamp"
+          onClick={onToggle}
+          aria-pressed={theme === "dark"}
+          aria-label={theme === "dark" ? "Switch to light" : "Switch to dark"}
+        >
+          {theme === "dark" ? "light" : "dark"}
+        </button>
+      </header>
       {children}
     </div>
   );

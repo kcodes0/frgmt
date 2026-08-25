@@ -83,3 +83,43 @@ export const updatePost = (id: string, draft: PostDraft) =>
 
 export const deletePost = (id: string) =>
   call<{ ok: boolean }>(`/api/admin/posts/${id}`, { method: "DELETE" });
+
+/* ---- blocks: editable page copy ---- */
+
+export const listBlocks = () =>
+  call<{ blocks: Record<string, string> }>("/api/blocks").then((d) => d.blocks);
+
+export const saveBlock = (key: string, content: string) =>
+  call<{ key: string }>(`/api/admin/blocks/${key}`, {
+    method: "PUT",
+    body: JSON.stringify({ content }),
+  });
+
+/* ---- notes: the fragments stream ---- */
+
+export interface Note {
+  id: string;
+  content: string;
+  created_at: string;
+  published?: number;
+  updated_at?: string;
+}
+
+export const listNotes = () => call<{ notes: Note[] }>("/api/notes").then((d) => d.notes);
+
+export const adminNotes = () =>
+  call<{ notes: Note[] }>("/api/admin/notes").then((d) => d.notes);
+
+export interface NoteDraft {
+  content: string;
+  published: boolean;
+}
+
+export const createNote = (draft: NoteDraft) =>
+  call<{ id: string }>("/api/admin/notes", { method: "POST", body: JSON.stringify(draft) });
+
+export const updateNote = (id: string, draft: NoteDraft) =>
+  call<{ id: string }>(`/api/admin/notes/${id}`, { method: "PUT", body: JSON.stringify(draft) });
+
+export const deleteNote = (id: string) =>
+  call<{ ok: boolean }>(`/api/admin/notes/${id}`, { method: "DELETE" });

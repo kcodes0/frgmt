@@ -7,3 +7,7 @@ dist/
 design/assets/raw/*.mp4
 design/assets/raw/*.png
 .gstack/
+
+# paint tool render output and logs
+design/tools/paint/out/
+design/tools/paint/serve.log

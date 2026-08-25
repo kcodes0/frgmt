@@ -167,6 +167,42 @@ function readPostBody(body: PostBody) {
   };
 }
 
+/* ---- notes ----
+ * Fragments: dated, untitled, a paragraph or less. The table is created
+ * lazily so the feature needs no manual migration step. */
+
+let notesReady: Promise<unknown> | null = null;
+const ensureNotes = (env: Env) =>
+  (notesReady ??= env.DB.prepare(
+    `CREATE TABLE IF NOT EXISTS notes (
+       id TEXT PRIMARY KEY,
+       content TEXT NOT NULL,
+       published INTEGER NOT NULL DEFAULT 1,
+       created_at TEXT NOT NULL DEFAULT (datetime('now')),
+       updated_at TEXT
+     )`,
+  ).run());
+
+function readNoteBody(body: { content?: unknown; published?: unknown }) {
+  const content = typeof body.content === "string" ? body.content.trim() : "";
+  if (!content) return null;
+  return { content, published: body.published ? 1 : 0 };
+}
+
+/* ---- blocks ----
+ * Editable page copy: any passage the site marks as editable lives here,
+ * keyed by name. Saving publishes immediately. Created lazily, like notes. */
+
+let blocksReady: Promise<unknown> | null = null;
+const ensureBlocks = (env: Env) =>
+  (blocksReady ??= env.DB.prepare(
+    `CREATE TABLE IF NOT EXISTS blocks (
+       key TEXT PRIMARY KEY,
+       content TEXT NOT NULL,
+       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+     )`,
+  ).run());
+
 /* ---- router ---- */
 
 export default {
@@ -183,6 +219,44 @@ export default {
            WHERE published = 1 ORDER BY created_at DESC`,
         ).all();
         return json({ posts: results });
+      }
+
+      if (path === "/api/blocks" && method === "GET") {
+        await ensureBlocks(env);
+        const { results } = await env.DB.prepare(`SELECT key, content FROM blocks`).all<{
+          key: string;
+          content: string;
+        }>();
+        const blocks: Record<string, string> = {};
+        for (const r of results) blocks[r.key] = r.content;
+        return json({ blocks });
+      }
+
+      const adminBlock = path.match(/^\/api\/admin\/blocks\/([a-z0-9-]{1,64})$/);
+      if (adminBlock && method === "PUT") {
+        const gate = await requireAdmin(env, request);
+        if (gate instanceof Response) return gate;
+        await ensureBlocks(env);
+        const body = (await request.json().catch(() => ({}))) as { content?: unknown };
+        const content = typeof body.content === "string" ? body.content.trim() : "";
+        if (!content) return err(400, "content is required");
+        await env.DB.prepare(
+          `INSERT INTO blocks (key, content) VALUES (?, ?)
+           ON CONFLICT(key) DO UPDATE SET content = excluded.content,
+             updated_at = datetime('now')`,
+        )
+          .bind(adminBlock[1], content)
+          .run();
+        return json({ key: adminBlock[1] });
+      }
+
+      if (path === "/api/notes" && method === "GET") {
+        await ensureNotes(env);
+        const { results } = await env.DB.prepare(
+          `SELECT id, content, created_at FROM notes
+           WHERE published = 1 ORDER BY created_at DESC`,
+        ).all();
+        return json({ notes: results });
       }
 
       const publicPost = path.match(/^\/api\/posts\/([a-z0-9-]+)$/);
@@ -307,6 +381,53 @@ export default {
         if (gate instanceof Response) return gate;
         const res = await env.DB.prepare(`DELETE FROM posts WHERE id = ?`).bind(adminPost[1]).run();
         return res.meta.changes ? json({ ok: true }) : err(404, "post not found");
+      }
+
+      if (path === "/api/admin/notes" && method === "GET") {
+        const gate = await requireAdmin(env, request);
+        if (gate instanceof Response) return gate;
+        await ensureNotes(env);
+        const { results } = await env.DB.prepare(
+          `SELECT id, content, published, created_at, updated_at
+           FROM notes ORDER BY created_at DESC`,
+        ).all();
+        return json({ notes: results });
+      }
+
+      if (path === "/api/admin/notes" && method === "POST") {
+        const gate = await requireAdmin(env, request);
+        if (gate instanceof Response) return gate;
+        await ensureNotes(env);
+        const fields = readNoteBody(((await request.json().catch(() => ({}))) ?? {}) as object);
+        if (!fields) return err(400, "content is required");
+        const id = newId();
+        await env.DB.prepare(`INSERT INTO notes (id, content, published) VALUES (?, ?, ?)`)
+          .bind(id, fields.content, fields.published)
+          .run();
+        return json({ id }, { status: 201 });
+      }
+
+      const adminNote = path.match(/^\/api\/admin\/notes\/([a-z0-9]+)$/);
+      if (adminNote && method === "PUT") {
+        const gate = await requireAdmin(env, request);
+        if (gate instanceof Response) return gate;
+        await ensureNotes(env);
+        const fields = readNoteBody(((await request.json().catch(() => ({}))) ?? {}) as object);
+        if (!fields) return err(400, "content is required");
+        const res = await env.DB.prepare(
+          `UPDATE notes SET content = ?, published = ?, updated_at = datetime('now') WHERE id = ?`,
+        )
+          .bind(fields.content, fields.published, adminNote[1])
+          .run();
+        return res.meta.changes ? json({ id: adminNote[1] }) : err(404, "note not found");
+      }
+
+      if (adminNote && method === "DELETE") {
+        const gate = await requireAdmin(env, request);
+        if (gate instanceof Response) return gate;
+        await ensureNotes(env);
+        const res = await env.DB.prepare(`DELETE FROM notes WHERE id = ?`).bind(adminNote[1]).run();
+        return res.meta.changes ? json({ ok: true }) : err(404, "note not found");
       }
 
       return err(404, "not found");

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
-import Blog from "./pages/Blog";
+import Home from "./pages/Home";
+import Essays from "./pages/Essays";
+import Notes from "./pages/Notes";
 import PostPage from "./pages/Post";
 import Admin from "./pages/Admin";
 import Chrome from "./Chrome";
@@ -14,9 +15,9 @@ function NotFound() {
   }, []);
   return (
     <Chrome>
-      <main id="main" className="bcol">
+      <main id="main" style={{ marginTop: "clamp(32px, 6vh, 64px)" }}>
         <h1 className="line">There is nothing at this address.</h1>
-        <p>
+        <p className="more">
           <a href="/">Home</a>
         </p>
       </main>
@@ -33,6 +34,7 @@ function Root() {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const a = (e.target as Element).closest?.("a[href]") as HTMLAnchorElement | null;
       if (!a || a.target || a.origin !== location.origin) return;
+      if (a.protocol === "mailto:") return;
       e.preventDefault();
       navigate(a.pathname);
     };
@@ -40,10 +42,14 @@ function Root() {
     return () => removeEventListener("click", onClick);
   }, []);
 
-  if (path === "/") return <App />;
-  if (path === "/blog") return <Blog />;
+  if (path === "/") return <Home />;
+  if (path === "/essays" || path === "/blog") return <Essays />;
+  // old /blog/... links keep working; /essays/... is canonical
+  if (path.startsWith("/essays/"))
+    return <PostPage key={path} slug={decodeURIComponent(path.slice(8))} />;
   if (path.startsWith("/blog/"))
     return <PostPage key={path} slug={decodeURIComponent(path.slice(6))} />;
+  if (path === "/notes") return <Notes />;
   if (path === "/admin" || path.startsWith("/admin/")) return <Admin />;
   return <NotFound />;
 }

@@ -1,31 +1,67 @@
 /*
-  Wall labels. Warm paper, one ink, hairlines, and a single narrow measure.
-  Everything is 13px except one line, so hierarchy comes from position and
-  space rather than from size or weight. There is no colour anywhere.
+  Route 04, Watermark. Warm paper, one ink, and pigment that enters in
+  exactly one way: pre-rendered watercolor, painted by p5.brush in
+  design/tools/paint. Ubuntu Mono is the working voice (nav, dates, keys,
+  fragments); Bricolage Grotesque carries headlines and essay prose.
+  Layout is one column that drifts rather than a grid.
 */
 
 :root {
   --paper: #fafaf7;
   --ink: #17171b;
-  --dim: #63635e;
-  --hair: #d8d8d1;
+  --dim: #6a6a63;
+  --hair: #dcdcd4;
 
-  --gutter: clamp(20px, 3vw, 48px);
-  --top: clamp(28px, 7vh, 88px);
-  --measure: 408px;
-  --gap: clamp(24px, 4vw, 72px);
+  --hero: url(/media/paint/hero-l.webp);
+  --div: url(/media/paint/divider-l.webp);
+  --markwash: url(/media/paint/mark-l.webp);
+
+  --sans: Quicksand, system-ui, sans-serif;
+  --mono: "Ubuntu Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --pad: clamp(20px, 5vw, 44px);
 }
 
-/*
-  Dark is the same room with the lights turned down, not an inverted palette.
-  The plate is the exception: drawn in this ink, it comes out as the negative,
-  which is the one place the dark room is allowed to be dramatic.
-*/
+/* Dark is the same desk with the lamp off: toned paper, lifted pigment. */
 :root[data-theme="dark"] {
   --paper: #101011;
   --ink: #eceae4;
   --dim: #8d8d86;
   --hair: #2a2a2c;
+
+  --hero: url(/media/paint/hero-d.webp);
+  --div: url(/media/paint/divider-d.webp);
+  --markwash: url(/media/paint/mark-d.webp);
+}
+
+/* Bloom stamps: one of six per pigment, picked by a hash of the entry. */
+:root {
+  --bloom-essay-0: url(/media/paint/bloom-essay-0-l.webp);
+  --bloom-essay-1: url(/media/paint/bloom-essay-1-l.webp);
+  --bloom-essay-2: url(/media/paint/bloom-essay-2-l.webp);
+  --bloom-essay-3: url(/media/paint/bloom-essay-3-l.webp);
+  --bloom-essay-4: url(/media/paint/bloom-essay-4-l.webp);
+  --bloom-essay-5: url(/media/paint/bloom-essay-5-l.webp);
+  --bloom-note-0: url(/media/paint/bloom-note-0-l.webp);
+  --bloom-note-1: url(/media/paint/bloom-note-1-l.webp);
+  --bloom-note-2: url(/media/paint/bloom-note-2-l.webp);
+  --bloom-note-3: url(/media/paint/bloom-note-3-l.webp);
+  --bloom-note-4: url(/media/paint/bloom-note-4-l.webp);
+  --bloom-note-5: url(/media/paint/bloom-note-5-l.webp);
+}
+:root[data-theme="dark"] {
+  --bloom-essay-0: url(/media/paint/bloom-essay-0-d.webp);
+  --bloom-essay-1: url(/media/paint/bloom-essay-1-d.webp);
+  --bloom-essay-2: url(/media/paint/bloom-essay-2-d.webp);
+  --bloom-essay-3: url(/media/paint/bloom-essay-3-d.webp);
+  --bloom-essay-4: url(/media/paint/bloom-essay-4-d.webp);
+  --bloom-essay-5: url(/media/paint/bloom-essay-5-d.webp);
+  --bloom-note-0: url(/media/paint/bloom-note-0-d.webp);
+  --bloom-note-1: url(/media/paint/bloom-note-1-d.webp);
+  --bloom-note-2: url(/media/paint/bloom-note-2-d.webp);
+  --bloom-note-3: url(/media/paint/bloom-note-3-d.webp);
+  --bloom-note-4: url(/media/paint/bloom-note-4-d.webp);
+  --bloom-note-5: url(/media/paint/bloom-note-5-d.webp);
 }
 
 * {
@@ -38,13 +74,16 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
 }
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 
 body {
   background: var(--paper);
   color: var(--ink);
-  font: 400 13px/1.62 Inter, system-ui, sans-serif;
-  font-optical-sizing: auto;
-  letter-spacing: -0.003em;
+  font: 400 13.5px/1.65 var(--mono);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -56,578 +95,450 @@ a {
 a:hover {
   border-bottom-color: var(--ink);
 }
-a:focus-visible {
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
   outline: 1px solid var(--ink);
-  outline-offset: 3px;
+  outline-offset: 2px;
+  border-radius: 1px;
 }
 
-/*
-  The wash covers the whole site and sits under everything. Fixed rather than
-  scrolling: the page moves across it, which is what keeps a pattern this slow
-  from turning into a texture that races the text.
-*/
-.wash {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+::selection {
+  background: color-mix(in oklab, var(--ink) 14%, var(--paper));
 }
 
 .skip {
   position: absolute;
   left: -9999px;
-}
-.skip:focus {
-  left: var(--gutter);
-  top: 10px;
-  z-index: 20;
+  top: 12px;
   background: var(--paper);
-  padding: 8px 12px;
+  padding: 6px 10px;
+  z-index: 10;
   border: 1px solid var(--ink);
 }
+.skip:focus {
+  left: 12px;
+}
 
-/*
-  Three tracks: an empty left gutter, the text measure, and the object column.
-  The empty left track is what parks the text off-centre; the third track is the
-  space the route kept deliberately void and the objects now occupy.
-*/
+/* ------------------------------------------------------------ the page */
+
 .page {
-  display: grid;
-  grid-template-columns:
-    minmax(var(--gutter), 0.62fr)
-    minmax(0, var(--measure))
-    minmax(0, 1.05fr);
-  /*
-    Named explicitly so the rail can span the whole grid. `grid-row: 1 / -1`
-    resolves against explicit lines only, so with implicit rows it silently
-    collapses to a single row and the sticky rail scrolls away. The three bands
-    are: the head and intro, the work, and the tail.
-  */
-  grid-template-rows: auto auto auto;
-  column-gap: var(--gap);
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: var(--top) var(--gutter) clamp(48px, 12vh, 140px);
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 0 var(--pad) 12vh;
+  min-height: 100dvh;
 }
 
-/* text blocks live in the middle track */
-.col,
-.col-slot {
-  grid-column: 2;
-}
+/* ------------------------------------------------------------ header */
 
-/*
-  Rows are assigned by hand rather than left to auto-placement. The rail spans
-  the whole grid, and an auto-placed sibling will not share a row with a
-  spanning item: it gets pushed into a new implicit row instead, which takes the
-  work section out from under the rail and leaves it nothing to stick against.
-*/
-main.col {
-  grid-row: 1;
-}
-.works {
-  grid-row: 2;
-}
-.tail {
-  grid-row: 3;
-}
-
-.mark {
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: start;
-  font-size: 13px;
-}
-
-/*
-  The floor plan. The left track was empty because the route parks the text
-  off-centre, but on a page this tall an empty column that never tells you where
-  you are is just margin. This is the one thing the gutter can hold without
-  competing: seven words, the same 13px as everything else, and the room you are
-  standing in set in ink while the rest stay dim.
-
-  It spans every row so its list can be sticky, and rides up to --top, the same
-  line the objects hold at.
-*/
-.rail {
-  grid-column: 1;
-  grid-row: 1 / -1;
-  padding-top: 2.6em;
-}
-
-.rail ul {
-  position: sticky;
-  top: var(--top);
-  list-style: none;
-}
-
-.rail li + li {
-  margin-top: 3px;
-}
-
-/* a room label, not a destination */
-.rail .room {
-  color: var(--dim);
-  display: block;
-  padding-left: 9px;
-  margin-left: -10px;
-  border-left: 1px solid transparent;
-}
-.rail .sub {
-  padding-left: 1.15em;
-}
-.rail .sub:first-of-type {
-  margin-top: 4px;
-}
-
-.rail a {
-  color: var(--dim);
-  border: 0;
-  /* the hairline is the marker, so reserve its width on every row */
-  border-left: 1px solid transparent;
-  padding-left: 9px;
-  margin-left: -10px;
-  display: block;
-  transition: color 0.18s ease, border-color 0.18s ease;
-}
-.rail a:hover {
-  color: var(--ink);
-}
-.rail a[data-on] {
-  color: var(--ink);
-  border-left-color: var(--ink);
-}
-.rail a:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 2px;
-}
-
-/* an anchor jump should land the heading where the rail is looking */
-section,
-.work {
-  scroll-margin-top: var(--top);
-}
-
-.line {
-  font-size: clamp(21px, 2.1vw, 29px);
-  font-weight: 400;
-  line-height: 1.24;
-  letter-spacing: -0.021em;
-  margin-bottom: clamp(52px, 10vh, 112px);
-}
-
-section {
-  margin-bottom: clamp(44px, 8vh, 88px);
-}
-
-.key {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--dim);
-  margin-bottom: 16px;
-}
-
-p {
-  max-width: 40ch;
-}
-p + p {
-  margin-top: 1.1em;
-}
-
-/*
-  The plate. Fixed to the viewport's right edge, under the text, over the wash.
-  Its width is whatever the third track plus the outer margin comes to, capped
-  so the crop stays taller than it is wide; its left edge and both ends are
-  feathered so the dots scatter into the paper instead of ending at a seam.
-*/
-.plate {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100dvh;
-  width: min(42vw, calc(100dvh * 0.62));
-  z-index: -1;
-  pointer-events: none;
-  --fade: linear-gradient(to right, transparent, #000 24%),
-    linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
-  -webkit-mask-image: var(--fade);
-  -webkit-mask-composite: source-in;
-  mask-image: var(--fade);
-  mask-composite: intersect;
-}
-
-/* the arrival is a response to the switch; on first load it is simply there */
-.page[data-swapped] .plate {
-  animation: settle 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* held out of the wipe, so it is not baked into its snapshot */
-.page[data-settling] .plate {
-  animation: none;
-  opacity: 0;
-}
-
-/* ---- work: text in track 2, beside the plate ---- */
-
-.works {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns:
-    minmax(var(--gutter), 0.62fr)
-    minmax(0, var(--measure))
-    minmax(0, 1.05fr);
-  column-gap: var(--gap);
-}
-
-.work {
-  grid-column: 2;
-  margin-bottom: clamp(40px, 9vh, 96px);
-}
-
-.work-text {
-  border-top: 1px solid var(--hair);
-  padding-top: 12px;
-}
-
-.work h3 {
-  font-size: 13px;
-  font-weight: 400;
+.top {
   display: flex;
-  justify-content: space-between;
-  gap: 1.5em;
   align-items: baseline;
-}
-.work h3 a {
-  border: 0;
-}
-.work h3 a:hover {
-  border-bottom: 1px solid var(--ink);
+  gap: 22px;
+  padding-top: clamp(20px, 4vh, 44px);
 }
 
-.spec {
+/* the wordmark: Quicksand letterforms filled with painted ink */
+.mark {
+  font: 700 21px/1 var(--sans);
+  border-bottom: none;
+  letter-spacing: 0.02em;
+  background: var(--markwash) left center / cover no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.top nav {
+  display: flex;
+  gap: 18px;
+  margin-left: auto;
+}
+.top nav a {
+  font: 400 14px/1 var(--mono);
   color: var(--dim);
-  font-size: 12px;
-  white-space: nowrap;
+  border-bottom-color: transparent;
 }
-
-.work p {
-  margin-top: 9px;
-  color: var(--dim);
+.top nav a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--hair);
 }
-.more {
-  margin-top: 9px;
-  font-size: 12px;
+.top nav a[aria-current="page"] {
+  color: var(--ink);
 }
-
-@keyframes settle {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.985);
-    filter: blur(3px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
-  }
-}
-
-/* ---- theme control ---- */
 
 .lamp {
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
-  align-self: start;
-  font: inherit;
+  font: 400 14px/1 var(--mono);
   color: var(--dim);
-  /* the lamp hangs over the plate, so it carries its own patch of paper */
-  background: color-mix(in srgb, var(--paper) 85%, transparent);
-  border: 0;
-  border-bottom: 1px solid var(--hair);
-  padding: 0 5px 1px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
   cursor: pointer;
+  padding: 0;
 }
 .lamp:hover {
   color: var(--ink);
-  border-bottom-color: var(--ink);
-}
-.lamp:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 3px;
+  border-bottom-color: var(--hair);
 }
 
-/*
-  Kill the default cross-fade. The circular wipe drawn in theme.ts is the whole
-  effect, and a fade underneath it just makes the edge muddy.
-*/
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-old(root) {
-  z-index: 0;
-}
-::view-transition-new(root) {
-  z-index: 1;
+/* ------------------------------------------------------------ home */
+
+.hero {
+  aspect-ratio: 1400 / 340;
+  background: var(--hero) center / contain no-repeat;
+  margin: clamp(16px, 5vh, 56px) calc(-0.5 * var(--pad)) 0;
+  pointer-events: none;
 }
 
-/* ---- experience ---- */
-
-.cv div {
-  display: grid;
-  /* wide enough that a full year range stays on one line */
-  grid-template-columns: 7.2em minmax(0, 1fr);
-  gap: 0 1.5em;
-  padding: 7px 0;
-}
-.cv div + div {
-  border-top: 1px solid var(--hair);
-}
-.cv dt {
-  color: var(--dim);
-  font-variant-numeric: tabular-nums;
+.opening {
+  font: 500 clamp(17.5px, 2.5vw, 22px) / 1.55 var(--sans);
+  max-width: 27em;
+  margin-top: calc(min(-24px, -4vw));
 }
 
-.end {
-  color: var(--dim);
-  border-top: 1px solid var(--hair);
-  padding-top: 14px;
+.opening a {
+  border-bottom-color: color-mix(in oklab, var(--ink) 30%, transparent);
+}
+.opening p + p,
+.body-copy p + p {
+  margin-top: 0.8em;
 }
 
-/* ---- blog + admin: the vitrine frame, parked off-centre like the wall labels ---- */
-
-.frame {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: var(--top) var(--gutter) clamp(48px, 12vh, 140px);
+/* the site is its own CMS: signed in, passages grow an edit affordance */
+.editable {
+  position: relative;
 }
-.frame .mark {
-  position: absolute;
-  top: var(--top);
-  left: var(--gutter);
-  border: 0;
-}
-.frame .lamp {
-  position: absolute;
-  top: var(--top);
-  right: var(--gutter);
-}
-.bcol {
-  width: min(520px, 100%);
-  margin-left: min(22%, 300px);
-}
-
-/* the newest post carries the one large line; the rest are wall labels */
-.latest {
-  margin-bottom: clamp(44px, 8vh, 88px);
-}
-.latest-title {
+.edit-link {
   display: block;
-  font-size: clamp(21px, 2.1vw, 29px);
-  line-height: 1.24;
-  letter-spacing: -0.021em;
-  border: 0;
-  margin-bottom: 6px;
+  font: 400 12px/1 var(--mono);
+  color: var(--dim);
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--hair);
+  cursor: pointer;
+  padding: 0;
+  margin-top: 8px;
 }
-.latest-title:hover {
-  border: 0;
-  text-decoration: underline;
-  text-decoration-color: var(--hair);
-  text-underline-offset: 5px;
+.edit-link:hover {
+  color: var(--ink);
 }
-.latest-meta {
+.editable .pad.short {
+  margin-top: 6px;
+}
+
+section {
+  margin-top: clamp(44px, 8vh, 84px);
+}
+
+/* the drift: sections step off a shared axis instead of stacking flush */
+@media (min-width: 860px) {
+  .drift-1 {
+    margin-left: 9%;
+  }
+  .drift-2 {
+    margin-left: 18%;
+  }
+}
+
+.key {
+  font: 400 13px/1.6 var(--mono);
   color: var(--dim);
   margin-bottom: 14px;
 }
 
+.body-copy {
+  font: 400 15.5px/1.7 var(--sans);
+  max-width: 36em;
+}
+.body-copy + .body-copy {
+  margin-top: 0.8em;
+}
+
+/* ------------------------------------------------------------ entries */
+
+.entries {
+  display: grid;
+  gap: 20px;
+  max-width: 560px;
+}
+
 .entry {
-  border-top: 1px solid var(--hair);
-  padding-top: 12px;
-  margin-bottom: 26px;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.stamp {
+  width: 36px;
+  height: 36px;
+  background: var(--stamp, var(--bloom-essay-0)) center / cover no-repeat;
+  margin-top: -1px;
+}
+
+.entry h3,
+.entry .note-line {
+  font: 400 16.5px/1.5 var(--sans);
 }
 .entry h3 {
-  font-size: 13px;
-  font-weight: 400;
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5em;
-  align-items: baseline;
+  font-weight: 500;
 }
-.entry h3 a {
-  border: 0;
+.entry h3 a,
+.entry .note-line a {
+  border-bottom-color: transparent;
 }
-.entry h3 a:hover {
-  border-bottom: 1px solid var(--ink);
+.entry h3 a:hover,
+.entry .note-line a:hover {
+  border-bottom-color: var(--hair);
 }
-.entry p {
-  margin-top: 9px;
+
+.spec {
+  font: 400 12.5px/1.6 var(--mono);
   color: var(--dim);
+  white-space: nowrap;
 }
 
-.back {
-  margin-bottom: clamp(28px, 6vh, 56px);
+.entry .excerpt {
+  font: 400 13.5px/1.6 var(--sans);
+  color: var(--dim);
+  max-width: 30em;
+  margin-top: 2px;
 }
 
-/* post body: still 13px, still one ink */
-.prose p {
-  max-width: none;
-  margin-top: 1.1em;
+/* ------------------------------------------------------------ notes */
+
+.notes {
+  display: grid;
+  gap: clamp(32px, 6vh, 56px);
+  max-width: 620px;
+}
+
+.note {
+  max-width: 34em;
+}
+.note .prose {
+  font: 400 14px/1.7 var(--mono);
+}
+
+/* fragments drift down the page instead of lining up */
+@media (min-width: 860px) {
+  .note:nth-child(3n + 2) {
+    margin-left: 11%;
+  }
+  .note:nth-child(3n) {
+    margin-left: 5%;
+  }
+}
+
+.note-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.note-head .stamp {
+  width: 26px;
+  height: 26px;
+  margin: 0;
+}
+
+/* ------------------------------------------------------------ divider */
+
+.divider {
+  border: none;
+  aspect-ratio: 1200 / 60;
+  width: min(520px, 82%);
+  background: var(--div) center / contain no-repeat;
+  margin: clamp(48px, 9vh, 96px) 0 0;
+}
+
+/* ------------------------------------------------------------ prose */
+
+.line {
+  font: 600 clamp(22px, 3.2vw, 28px) / 1.35 var(--sans);
+  max-width: 22em;
+  margin-bottom: 18px;
+}
+
+.prose {
+  font: 400 15.5px/1.72 var(--sans);
+  max-width: 40em;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose pre {
+  margin-bottom: 1em;
 }
 .prose h2,
-.prose h3,
-.prose h4 {
-  font-weight: 400;
-  margin: 2.2em 0 0;
+.prose h3 {
+  font-weight: 500;
+  margin: 1.6em 0 0.5em;
 }
 .prose h2 {
-  font-size: 17px;
-  letter-spacing: -0.012em;
+  font-size: 1.25em;
 }
 .prose h3 {
-  font-size: 13px;
-  border-top: 1px solid var(--hair);
-  padding-top: 12px;
-}
-.prose h4 {
-  font-size: 13px;
-  color: var(--dim);
-}
-.prose h2 + p,
-.prose h3 + p,
-.prose h4 + p {
-  margin-top: 0.9em;
+  font-size: 1.05em;
 }
 .prose ul,
 .prose ol {
-  margin-top: 1.1em;
   padding-left: 1.4em;
 }
-.prose li + li {
-  margin-top: 4px;
-}
 .prose blockquote {
-  margin-top: 1.1em;
-  padding-left: 12px;
-  border-left: 1px solid var(--hair);
+  border-left: 2px solid var(--hair);
+  padding-left: 1em;
   color: var(--dim);
-}
-.prose hr {
-  border: 0;
-  border-top: 1px solid var(--hair);
-  margin: 2.2em 0;
+  font-style: italic;
 }
 .prose code {
-  font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
-  background: color-mix(in srgb, var(--ink) 5%, transparent);
-  padding: 1px 4px;
+  font: 400 0.82em/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: color-mix(in oklab, var(--ink) 6%, var(--paper));
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
 }
 .prose pre {
-  margin-top: 1.1em;
-  border: 1px solid var(--hair);
-  padding: 12px 14px;
+  background: color-mix(in oklab, var(--ink) 5%, var(--paper));
+  padding: 14px 16px;
   overflow-x: auto;
+  border-radius: 4px;
 }
 .prose pre code {
   background: none;
   padding: 0;
-  display: block;
+}
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--hair);
+  margin: 2em 0;
 }
 .prose img {
   max-width: 100%;
-  margin-top: 1.1em;
 }
 
-/* ---- admin ---- */
+/* ------------------------------------------------------------ misc */
+
+.more {
+  font-size: 13px;
+}
+.back {
+  margin-bottom: clamp(28px, 5vh, 48px);
+  color: var(--dim);
+}
+
+.end {
+  font-size: 12.5px;
+  color: var(--dim);
+  margin-top: clamp(40px, 7vh, 72px);
+}
+.end a {
+  border-bottom-color: transparent;
+}
+.end a:hover {
+  border-bottom-color: var(--hair);
+}
+
+.problem {
+  color: var(--ink);
+  font-size: 13px;
+  margin-top: 12px;
+  border-left: 2px solid var(--ink);
+  padding-left: 10px;
+}
+
+/* ------------------------------------------------------------ admin */
+
+.bcol {
+  margin-top: clamp(32px, 6vh, 64px);
+}
+
+.admin .entry {
+  grid-template-columns: 1fr;
+}
 
 .field {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .field label {
   display: block;
+  font-size: 12.5px;
   color: var(--dim);
-  font-size: 12px;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 .field input {
   width: 100%;
-  font: inherit;
+  font: 400 14px/1.5 var(--mono);
   color: var(--ink);
-  background: transparent;
-  border: 0;
+  background: none;
+  border: none;
   border-bottom: 1px solid var(--hair);
   padding: 4px 0;
 }
 .field input:focus {
-  outline: 0;
+  outline: none;
   border-bottom-color: var(--ink);
 }
 .field-row {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-.login {
-  max-width: 320px;
+@media (max-width: 620px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
-  border: 1px solid var(--hair);
-  border-bottom: 0;
-  padding: 4px;
+  margin: 18px 0 8px;
 }
 .toolbar button {
-  font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 400 12.5px/1 var(--mono);
   color: var(--dim);
   background: none;
-  border: 0;
-  padding: 6px 9px;
+  border: 1px solid transparent;
+  padding: 6px 8px;
   cursor: pointer;
+  border-radius: 3px;
 }
 .toolbar button:hover {
   color: var(--ink);
-  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  border-color: var(--hair);
 }
-.toolbar .tool-toggle {
+.tool-toggle {
   margin-left: auto;
-  font-family: inherit;
-  border-bottom: 1px solid var(--hair);
 }
 
 .pad {
   width: 100%;
-  min-height: 52vh;
-  resize: vertical;
-  font: 12.5px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+  min-height: 46vh;
+  font: 400 14px/1.7 var(--mono);
   color: var(--ink);
-  background: transparent;
+  background: none;
   border: 1px solid var(--hair);
-  padding: 12px 14px;
+  border-radius: 4px;
+  padding: 14px 16px;
+  resize: vertical;
 }
 .pad:focus {
-  outline: 0;
+  outline: none;
   border-color: var(--ink);
 }
-.preview {
-  border: 1px solid var(--hair);
-  padding: 12px 14px;
-  min-height: 52vh;
-}
-.preview > :first-child {
-  margin-top: 0;
+
+.pad.short {
+  min-height: 120px;
 }
 
 .editbar {
   display: flex;
-  align-items: baseline;
-  gap: 1.5em;
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--hair);
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
 }
 .editbar-actions {
   margin-left: auto;
@@ -635,129 +546,32 @@ p + p {
 .check {
   display: flex;
   align-items: center;
-  gap: 7px;
-  cursor: pointer;
-}
-.check input {
-  accent-color: var(--ink);
-}
-.lamp:disabled {
-  opacity: 0.45;
-  cursor: default;
-}
-.lamp:disabled:hover {
+  gap: 6px;
+  font-size: 13px;
   color: var(--dim);
-  border-bottom-color: var(--hair);
 }
 .lamp.inline {
-  margin-left: 1em;
+  margin-left: 10px;
+  font-size: 12.5px;
 }
-.problem {
-  margin-top: 12px;
+.lamp:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.login {
+  max-width: 320px;
+}
+.preview {
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  padding: 14px 16px;
+  min-height: 46vh;
+}
+.admin-actions a {
+  color: var(--dim);
+  margin-right: 10px;
+}
+.admin-actions a:hover {
   color: var(--ink);
-}
-.admin-actions a + a {
-  margin-left: 1em;
-}
-
-@media (max-width: 900px) {
-  .bcol {
-    width: 100%;
-    margin-left: 0;
-  }
-  .frame .mark,
-  .frame .lamp {
-    position: static;
-  }
-  .frame .mark {
-    display: inline-block;
-    margin-bottom: clamp(40px, 8vh, 72px);
-  }
-  .frame .lamp {
-    float: right;
-  }
-  .field-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-}
-
-@media (max-width: 420px) {
-  .entry h3 {
-    display: block;
-  }
-  .entry .spec {
-    display: block;
-    margin-top: 3px;
-  }
-}
-
-/* ---- narrow ---- */
-
-@media (max-width: 900px) {
-  .page,
-  .works {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  /* one column, so the hand-assigned rows go back to stacking */
-  .page {
-    grid-template-rows: none;
-  }
-  main.col,
-  .works,
-  .tail {
-    grid-row: auto;
-  }
-  .col,
-  .col-slot,
-  .mark,
-  .work {
-    grid-column: 1;
-  }
-  .mark {
-    grid-row: 1;
-    display: block;
-    margin-bottom: clamp(40px, 8vh, 72px);
-  }
-  .lamp {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  /*
-    Gone below the fold-width. There is no gutter to put it in, and a scroll
-    this short does not need an index: repeating the section names above the
-    sections themselves would be navigation for its own sake.
-  */
-  .rail {
-    display: none;
-  }
-  /*
-    Gone too. A fixed plate under a single column of text is not a hanging
-    photograph any more, it is a background fighting the words.
-  */
-  .plate {
-    display: none;
-  }
-}
-
-@media (max-width: 420px) {
-  .work h3 {
-    display: block;
-  }
-  .spec {
-    display: block;
-    margin-top: 3px;
-  }
-  .cv div {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
 }
