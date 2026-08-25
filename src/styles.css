@@ -32,6 +32,24 @@
   --hero: url(/media/paint/hero-d.webp);
   --div: url(/media/paint/divider-d.webp);
   --markwash: url(/media/paint/mark-d.webp);
+  --scene: url(/media/paint/scene-d.webp);
+}
+
+/* Dark mode: the whole site is the painting. A fixed nocturne fills the
+   viewport behind every page; content floats in the night air. */
+.backdrop {
+  display: none;
+}
+:root[data-theme="dark"] .backdrop {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #101011 var(--scene) center bottom / cover no-repeat;
+}
+/* the painting replaces the little hero strip */
+:root[data-theme="dark"] .hero {
+  display: none;
 }
 
 /* Bloom stamps: one of six per pigment, picked by a hash of the entry. */
@@ -148,6 +166,10 @@ textarea:focus-visible {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  mix-blend-mode: multiply;
+}
+:root[data-theme="dark"] .mark {
+  mix-blend-mode: screen;
 }
 
 .top nav {
@@ -189,12 +211,18 @@ textarea:focus-visible {
   background: var(--hero) center / contain no-repeat;
   margin: clamp(16px, 5vh, 56px) calc(-0.5 * var(--pad)) 0;
   pointer-events: none;
+  mix-blend-mode: multiply;
 }
 
 .opening {
   font: 500 clamp(17.5px, 2.5vw, 22px) / 1.55 var(--sans);
   max-width: 27em;
   margin-top: calc(min(-24px, -4vw));
+}
+/* light mode overlaps the pale wash; in dark the hero strip is gone and
+   the opening simply starts the page under the painted sky */
+:root[data-theme="dark"] .opening {
+  margin-top: clamp(40px, 9vh, 90px);
 }
 
 .opening a {
@@ -275,6 +303,12 @@ section {
   height: 36px;
   background: var(--stamp, var(--bloom-essay-0)) center / cover no-repeat;
   margin-top: -1px;
+  /* pigment behaves like paint: multiply sinks it into the paper, and in
+     dark mode screen floats it over the painted backdrop (black = no-op) */
+  mix-blend-mode: multiply;
+}
+:root[data-theme="dark"] .stamp {
+  mix-blend-mode: screen;
 }
 
 .entry h3,
@@ -351,6 +385,10 @@ section {
   width: min(520px, 82%);
   background: var(--div) center / contain no-repeat;
   margin: clamp(48px, 9vh, 96px) 0 0;
+  mix-blend-mode: multiply;
+}
+:root[data-theme="dark"] .divider {
+  mix-blend-mode: screen;
 }
 
 /* ------------------------------------------------------------ prose */

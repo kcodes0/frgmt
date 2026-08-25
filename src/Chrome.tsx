@@ -39,6 +39,7 @@ export default function Chrome({
 
   return (
     <div className="page">
+      <div className="backdrop" aria-hidden="true" />
       <a className="skip" href="#main">
         Skip to content
       </a>

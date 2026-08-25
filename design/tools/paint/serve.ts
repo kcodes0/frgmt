@@ -24,7 +24,9 @@ Bun.serve({
     }
     const path = url.pathname === "/" ? "/sheet.html" : url.pathname;
     const file = Bun.file(new URL(`.${path}`, import.meta.url).pathname);
-    return (await file.exists()) ? new Response(file) : new Response("404", { status: 404 });
+    return (await file.exists())
+      ? new Response(file, { headers: { "cache-control": "no-store" } })
+      : new Response("404", { status: 404 });
   },
 });
 console.log("paint server on http://localhost:8317");
