@@ -4,6 +4,7 @@ import Editable from "../Editable";
 import { listBlocks, listNotes, listPosts, me, type Note, type PostSummary } from "../api";
 import { renderMarkdown } from "../markdown";
 import { fmtShort, stampVar } from "../paint";
+import { Commits, Languages, StackLines } from "../widgets";
 
 /**
  * Home: a wash, an honest opening, and the most recent writing, essays
@@ -19,6 +20,14 @@ const DEFAULTS: Record<string, string> = {
   now: "Most days that means small experiments, school, and talking with other students about AI as a Claude Ambassador. I'm between bigger projects on purpose, and I'd rather say that plainly than dress it up. Los Angeles.",
   elsewhere:
     "If any of this sparks something, shoot me a line: [jason@frgmt.xyz](mailto:jason@frgmt.xyz). Always down to jam on this stuff, probably more than I should be. Code's up at [github.com/frgmt0](https://github.com/frgmt0) if you want to dive in.",
+  stack: [
+    "typescript · most of what i write starts here",
+    "react · the site itself",
+    "cloudflare workers · the api, the edge cache, the whole backend",
+    "d1 · sqlite at the edge, holding the essays and notes",
+    "bun · runs everything locally",
+    "p5.brush · paints the pigment, offline, one sheet at a time",
+  ].join("\n"),
 };
 
 type Recent =
@@ -134,6 +143,21 @@ export default function Home() {
               <a href="/essays">all essays</a> · <a href="/notes">all notes</a>
             </p>
           )}
+        </section>
+
+        <Commits />
+
+        <section aria-label="Workbench">
+          <h2 className="key">Workbench</h2>
+          <Editable
+            k="stack"
+            value={block("stack")}
+            admin={admin}
+            onSaved={onSaved}
+            hint="one tool per line, like: bun · runs everything locally"
+            render={(c) => <StackLines content={c} />}
+          />
+          <Languages />
         </section>
 
         <section className="drift-1" aria-label="Contact">

@@ -14,6 +14,8 @@
 
 interface Env {
   DB: D1Database;
+  /** optional: `wrangler secret put GITHUB_TOKEN` raises the API rate limit */
+  GITHUB_TOKEN?: string;
 }
 
 const SESSION_DAYS = 30;
@@ -203,10 +205,116 @@ const ensureBlocks = (env: Env) =>
      )`,
   ).run());
 
+/* ---- pull ----
+ * Live feeds from outside APIs, fetched at the edge and cached there so
+ * outside rate limits never matter and no token reaches the client.
+ * Adding a source is one entry here: where to fetch, what shape to hand
+ * back, how long the edge keeps it. Served as GET /api/pull/:name and
+ * read by src/pull.ts. */
+
+const GITHUB_USER = "frgmt0";
+
+const gh = (env: Env, path: string) =>
+  fetch(`https://api.github.com${path}`, {
+    headers: {
+      accept: "application/vnd.github+json",
+      "user-agent": "frgmt.xyz",
+      ...(env.GITHUB_TOKEN ? { authorization: `Bearer ${env.GITHUB_TOKEN}` } : {}),
+    },
+  });
+
+interface PullSource {
+  /** seconds the edge cache holds the shaped response */
+  ttl: number;
+  load: (env: Env) => Promise<unknown>;
+}
+
+const SOURCES: Record<string, PullSource> = {
+  commits: {
+    ttl: 600,
+    load: async (env) => {
+      // the public events feed only carries each push's head sha these
+      // days, so it names the pushes and a second hop fetches the messages
+      const res = await gh(env, `/users/${GITHUB_USER}/events/public?per_page=100`);
+      if (!res.ok) throw new Error(`github said ${res.status}`);
+      const events = (await res.json()) as Array<{
+        type: string;
+        repo: { name: string };
+        created_at: string;
+        payload: { head?: string };
+      }>;
+      const pushes: Array<{ repo: string; head: string; date: string }> = [];
+      const seen = new Set<string>();
+      for (const ev of events) {
+        if (ev.type !== "PushEvent" || !ev.payload.head) continue;
+        if (seen.has(ev.payload.head)) continue;
+        seen.add(ev.payload.head);
+        pushes.push({ repo: ev.repo.name, head: ev.payload.head, date: ev.created_at });
+        if (pushes.length === 12) break;
+      }
+      const commits = await Promise.all(
+        pushes.map(async (p) => {
+          const c = await gh(env, `/repos/${p.repo}/commits/${p.head}`);
+          if (!c.ok) return null;
+          const body = (await c.json()) as {
+            sha: string;
+            html_url: string;
+            commit: { message: string };
+          };
+          return {
+            repo: p.repo.replace(`${GITHUB_USER}/`, ""),
+            message: body.commit.message.split("\n")[0].slice(0, 140),
+            sha: body.sha.slice(0, 7),
+            url: body.html_url,
+            date: p.date,
+          };
+        }),
+      );
+      return { commits: commits.filter((c) => c !== null) };
+    },
+  },
+  languages: {
+    ttl: 21600,
+    load: async (env) => {
+      const res = await gh(env, `/users/${GITHUB_USER}/repos?per_page=60&sort=pushed`);
+      if (!res.ok) throw new Error(`github said ${res.status}`);
+      const repos = (await res.json()) as Array<{
+        full_name: string;
+        fork: boolean;
+      }>;
+      // byte-weighted across the two dozen most recently pushed non-forks:
+      // "what i use" should mean lately, and it keeps subrequests modest
+      const recent = repos.filter((r) => !r.fork).slice(0, 24);
+      let failed = 0;
+      const tallies = await Promise.all(
+        recent.map((r) =>
+          gh(env, `/repos/${r.full_name}/languages`).then((t) => {
+            if (!t.ok) failed++;
+            return (t.ok ? t.json() : {}) as Promise<Record<string, number>>;
+          }),
+        ),
+      );
+      // a partly rate-limited sweep would cache skewed shares for hours;
+      // better to fail the whole pull and let the client render nothing
+      if (failed > recent.length / 5) throw new Error("github rate limited the sweep");
+      const bytes = new Map<string, number>();
+      for (const t of tallies)
+        for (const [lang, n] of Object.entries(t)) bytes.set(lang, (bytes.get(lang) ?? 0) + n);
+      const total = [...bytes.values()].reduce((a, b) => a + b, 0);
+      if (!total) return { languages: [] };
+      const languages = [...bytes]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([name, n]) => ({ name, share: n / total }));
+      return { languages };
+    },
+  },
+};
+
 /* ---- router ---- */
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
     const method = request.method;
@@ -219,6 +327,22 @@ export default {
            WHERE published = 1 ORDER BY created_at DESC`,
         ).all();
         return json({ posts: results });
+      }
+
+      const pullMatch = path.match(/^\/api\/pull\/([a-z0-9-]{1,32})$/);
+      if (pullMatch && method === "GET") {
+        const source = SOURCES[pullMatch[1]];
+        if (!source) return err(404, "unknown source");
+        const cache = await caches.open("pull");
+        const key = new Request(`https://frgmt.xyz/api/pull/${pullMatch[1]}`);
+        const hit = await cache.match(key);
+        if (hit) return hit;
+        const data = await source.load(env);
+        const res = json(data, {
+          headers: { "cache-control": `public, max-age=300, s-maxage=${source.ttl}` },
+        });
+        ctx.waitUntil(cache.put(key, res.clone()));
+        return res;
       }
 
       if (path === "/api/blocks" && method === "GET") {

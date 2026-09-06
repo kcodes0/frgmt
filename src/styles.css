@@ -379,6 +379,94 @@ section {
   margin: 0;
 }
 
+/* ------------------------------------------------------------ widgets */
+/* Live panels (commits, languages, the stack) borrow the entry
+   vocabulary: blooms for pigment, mono for the working voice, no boxes.
+   Each repo and each language keeps one bloom, hashed like an entry. */
+
+.commits {
+  display: grid;
+  gap: 16px;
+  max-width: 560px;
+}
+
+.commit {
+  grid-template-columns: 26px 1fr;
+  gap: 12px;
+}
+.commit .stamp {
+  width: 26px;
+  height: 26px;
+  margin-top: 1px;
+}
+/* let the message column shrink so long one-liners ellipsize instead of
+   pushing the grid past the page */
+.commit > div {
+  min-width: 0;
+}
+
+.commit-msg {
+  font: 400 14px/1.55 var(--mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.commit-msg a {
+  border-bottom-color: transparent;
+}
+.commit-msg a:hover {
+  border-bottom-color: var(--hair);
+}
+
+/* languages as bloom tallies: pigment stands in for the bar chart */
+.langs {
+  display: grid;
+  gap: 9px;
+  max-width: 440px;
+  margin-top: 26px;
+}
+
+.lang {
+  display: grid;
+  grid-template-columns: minmax(96px, max-content) 1fr auto;
+  align-items: center;
+  gap: 14px;
+  font: 400 13px/1.6 var(--mono);
+  text-transform: lowercase;
+}
+
+.tally {
+  display: flex;
+  gap: 4px;
+}
+.tally .stamp {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  /* a shrunk bloom fades to nothing, so the tally crops into its dense
+     center and keeps the pigment legible at this size; the mask feathers
+     the crop back into a dab instead of a square */
+  background-size: 300%;
+  -webkit-mask: radial-gradient(closest-side, #000 45%, transparent);
+  mask: radial-gradient(closest-side, #000 45%, transparent);
+}
+
+/* the stack: hand-written lines, tool then what it does here */
+.stack {
+  display: grid;
+  gap: 10px;
+  max-width: 36em;
+}
+.stack-line {
+  font: 400 15px/1.6 var(--sans);
+}
+.stack-line .tool {
+  font-weight: 500;
+}
+.stack-line .what {
+  color: var(--dim);
+}
+
 /* ------------------------------------------------------------ divider */
 
 .divider {

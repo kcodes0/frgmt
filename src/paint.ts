@@ -16,6 +16,10 @@ export const fmtDate = (iso: string) =>
     day: "numeric",
   });
 
+/** for feeds that already carry a real ISO timestamp (github) */
+export const fmtDay = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
 export const fmtShort = (iso: string) =>
   new Date(iso.replace(" ", "T") + "Z").toLocaleDateString("en-US", {
     year: "numeric",

@@ -15,12 +15,14 @@ export default function Editable({
   admin,
   onSaved,
   render,
+  hint = "markdown works · saves straight to the live site",
 }: {
   k: string;
   value: string;
   admin: boolean;
   onSaved: (k: string, content: string) => void;
   render: (content: string) => ReactNode;
+  hint?: string;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value);
@@ -75,7 +77,7 @@ export default function Editable({
         spellCheck
       />
       <div className="editbar">
-        <span className="spec">markdown works · saves straight to the live site</span>
+        <span className="spec">{hint}</span>
         <span className="editbar-actions">
           <button className="lamp" style={{ marginRight: 14 }} onClick={() => setEditing(false)}>
             cancel
